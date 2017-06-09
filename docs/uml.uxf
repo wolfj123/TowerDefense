@@ -4,7 +4,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
+      <x>640</x>
       <y>10</y>
       <w>310</w>
       <h>180</h>
@@ -19,7 +19,6 @@ board
 boolean isHit
 --
 getHit(tower)
-getCreepsInRadius(board)
 HitAnimation(board)
 </panel_attributes>
     <additional_attributes/>
@@ -27,10 +26,10 @@ HitAnimation(board)
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
+      <x>310</x>
       <y>10</y>
       <w>310</w>
-      <h>180</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>Tower - visitor, tickable
 --
@@ -44,6 +43,7 @@ hit(creep)
 showRadius()
 moveNext(board)
 fireAnimation(board)
+getCreepsInRadius(board)
 
 
 </panel_attributes>
@@ -52,7 +52,7 @@ fireAnimation(board)
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>30</x>
+      <x>10</x>
       <y>230</y>
       <w>260</w>
       <h>130</h>
@@ -68,7 +68,7 @@ tickEveryone(List&lt;tickable&gt;)</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>20</x>
+      <x>0</x>
       <y>390</y>
       <w>290</w>
       <h>180</h>
@@ -90,7 +90,7 @@ lose()</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>520</x>
+      <x>500</x>
       <y>210</y>
       <w>420</w>
       <h>240</h>
