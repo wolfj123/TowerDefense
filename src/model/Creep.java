@@ -10,7 +10,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	private boolean _isUnderAttack;
 	private int _numOfStepsTaken; //to see which one to target
 	
-	protected int _poisonModifier;
+	protected double _poisonModifier;
 	protected int _poisonDuration;
 	
 	protected int _slowModifier;
@@ -61,7 +61,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 		_isUnderAttack = true;
 	}
 	
-	public void inflictPoison(int poisonModifier, int poisonDuration){
+	public void inflictPoison(double poisonModifier, int poisonDuration){
 		if(poisonModifier>=_poisonModifier) _poisonModifier = poisonModifier;
 		if(poisonDuration>=_poisonDuration) _poisonDuration = poisonDuration;
 	}
@@ -90,10 +90,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 		return _ticksBeforeAction*_slowModifier;
 	}
 	
-	@Override
-	public void impact(Tower t){ 
-		t.visit(this); 
-	}
+	//TODO: maybe this needs to be in the sub-classes?
 	
 	@Override
 	public void tickAction(){

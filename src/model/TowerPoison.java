@@ -2,28 +2,29 @@ package model;
 
 public class TowerPoison extends Tower {
 
-	@Override
-	public void visit(CreepSkull skull) {
-		// TODO Auto-generated method stub
-
+	public TowerPoison(int x, int y, Board board) {
+		super(x, y, 1, board, 2);
 	}
 
 	@Override
-	public void visit(CreepAlien alien) {
-		// TODO Auto-generated method stub
+	public void visit(CreepSkull creep) {
+		creep.inflictDamage(20);
+	}
 
+	//TODO: maybe add Null effect?
+	@Override
+	public void visit(CreepAlien creep) {
+		creep.inflictDamage(0);
 	}
 
 	@Override
-	public void visit(CreepKnight knight) {
-		// TODO Auto-generated method stub
-
+	public void visit(CreepKnight creep) {
+		creep.inflictPoison(2,10);
 	}
 
 	@Override
-	public void visit(CreepNinja ninja) {
-		// TODO Auto-generated method stub
-
+	public void visit(CreepNinja creep) {
+		creep.inflictPoison(1.5,10);
 	}
 
 }

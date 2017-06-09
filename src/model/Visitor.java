@@ -2,11 +2,11 @@ package model;
 
 public interface Visitor {
 	
-	void visit(CreepSkull skull);
+	void visit(CreepSkull creep);
 	
-	void visit(CreepAlien alien);
+	void visit(CreepAlien creep);
 	
-	void visit(CreepKnight knight);
+	void visit(CreepKnight creep);
 	
-	void visit(CreepNinja ninja);
+	void visit(CreepNinja creep);
 }

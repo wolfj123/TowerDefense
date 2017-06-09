@@ -6,4 +6,8 @@ public class CreepNinja extends Creep {
 		super(x, y, 1, board);
 	}
 	
+	@Override
+	public void impact(Tower t){ 
+		t.visit(this); 
+	}
 }

@@ -2,28 +2,28 @@ package model;
 
 public class TowerMagic extends Tower {
 
-	@Override
-	public void visit(CreepSkull skull) {
-		// TODO Auto-generated method stub
-
+	public TowerMagic(int x, int y, Board board) {
+		super(x, y, 1, board, 2);
 	}
 
 	@Override
-	public void visit(CreepAlien alien) {
-		// TODO Auto-generated method stub
-
+	public void visit(CreepSkull creep) {
+		creep.inflictDamage(25);
 	}
 
 	@Override
-	public void visit(CreepKnight knight) {
-		// TODO Auto-generated method stub
-
+	public void visit(CreepAlien creep) {
+		creep.inflictDamage(10);
 	}
 
 	@Override
-	public void visit(CreepNinja ninja) {
-		// TODO Auto-generated method stub
+	public void visit(CreepKnight creep) {
+		creep.inflictDamage(30);
+	}
 
+	@Override
+	public void visit(CreepNinja creep) {
+		creep.inflictDamage(10);
 	}
 
 }

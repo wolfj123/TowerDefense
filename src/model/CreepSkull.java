@@ -6,4 +6,8 @@ public class CreepSkull extends Creep {
 		super(x, y, 2, board);
 	}
 	
+	@Override
+	public void impact(Tower t){ 
+		t.visit(this); 
+	}
 }
