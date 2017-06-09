@@ -13,11 +13,9 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	
 	protected int _poisonModifier;
 	protected int _poisonDuration;
-	protected int _poisonTicks;
 	
 	protected int _slowModifier;
 	protected int _slowDuration;
-	protected int _slowTicks;
 	
 	
 	public Creep(int x, int y, int ticksBeforeAction, Board board){
@@ -29,11 +27,9 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		
 		_poisonModifier=1;
 		_poisonDuration=0;
-		_poisonTicks=0;
 		
 		_slowModifier = 1;
 		_slowDuration=0;
-		_slowTicks=0;
 	}
 	
 	public int getX(){
@@ -71,12 +67,9 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	}
 	
 	private void calculatePoison(){
-		if(_poisonDuration<=0) return;
-		_poisonTicks+=1;
-		if(_poisonTicks>=_poisonDuration){
+		_poisonDuration-=1;
+		if(_poisonDuration==0){
 			_poisonModifier=1;
-			_poisonTicks=0;
-			_poisonDuration=0;
 		}
 	}
 	
@@ -86,12 +79,9 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	}
 	
 	private void calculateSlow(){
-		if(_slowDuration<=0) return;
-		_slowTicks+=1;
-		if(_slowTicks>=_slowDuration){
+		_slowDuration-=1;
+		if(_slowDuration==0){
 			_slowModifier=1;
-			_slowTicks=0;
-			_slowDuration=0;
 		}
 	}
 	
