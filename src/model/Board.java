@@ -12,16 +12,13 @@ public class Board implements Tickable{
 	private Vector<Integer> _outGate;
 	
 	private Spawner _spawner;
-	private Tower[][] _towers;
-	private Creep[][][] _creeps;
-	
+	private Vector<Tower> _towers;
+	private Vector<Creep> _creeps;
 	private Vector<Creep> _deadCreeps;
 	private Vector<Creep> _victoriousCreeps;
 
 	private int _playerHealth;
 	private int wave;
-	
-	private static int _maxNumOfCreepsInCell = 2;  //To allow a ninja with another creep
 	
 	public Board(Direction[][] directionBoard){
 		_directionBoard = directionBoard;
@@ -29,18 +26,8 @@ public class Board implements Tickable{
 		_xSize = directionBoard.length;
 		_ySize = directionBoard[0].length;
 		
-		_towers = new Tower[_xSize][_ySize];
-		_creeps = new Creep[_xSize][_ySize][_maxNumOfCreepsInCell];
-		
-		//initialize the arrays with nulls
-		for(int i=0; i<_xSize; i++){
-			for(int j=0; j<_ySize; j++){
-				for(int k = 0; k<_maxNumOfCreepsInCell; k++){
-					_towers[i][j] = null;
-					_creeps[i][j][k] = null;	
-				}
-			}
-		}
+		_towers = new Vector<Tower>();
+		_creeps = new Vector<Creep>();
 	}
 	
 	public int getXsize(){
@@ -55,11 +42,12 @@ public class Board implements Tickable{
 		return _playerHealth;
 	}
 	
-	public Tower[][] getTowers(){
+	public Vector<Tower> getTowers(){
 		return _towers;
 	}
 	
-	public Creep[][][] getCreeps(){
+	public Vector<Creep> getCreeps(){
+		_creeps.sort(null);
 		return _creeps;
 	}
 	
@@ -71,28 +59,22 @@ public class Board implements Tickable{
 		
 		Vector<Creep> output = new Vector<Creep>();
 		
-		//Add all creeps in range
-		for(int i=x-range; i<=x+range; i++){
-			for(int j=y-range; j<=y+range; j++){
-				for(int k = 0; k<_maxNumOfCreepsInCell; k++){				
-					Creep current = _creeps[i][j][k];
-					if(current!=null){
-						output.add(current);
-					}
-				}
-			}
+		for(Creep c : _creeps){
+			if(c.getX()>=x-range & c.getX()<=x+range & c.getY()>=y-range & c.getY()<=y+range)
+				output.add(c);
 		}
-		
-		output.sort(null);
+		output.sort(null); //sort by who is the most advanced
 		return output;
 	}
 	
-	public boolean addTower(int x, int y) {
+	public boolean addTower(Tower tower) {
 		// TODO Auto-generated method stub
 	}
 	
-	public boolean addCreep(int x, int y) {
-		// TODO Auto-generated method stub
+	public boolean addCreep(Creep creep) {
+		if(_creeps.contains(creep)) return false;
+		
+		
 	}
 	
 	public Direction getDirection(int x, int y){
@@ -111,8 +93,7 @@ public class Board implements Tickable{
 	}
 	
 	public boolean playerWon() {
-		return (_spawner.isEmpty() & _creeps.length)
-		// TODO Auto-generated method stub
+		return (_spawner.isEmpty() & _creeps.isEmpty());
 	}
 	
 	public boolean playerLost() {

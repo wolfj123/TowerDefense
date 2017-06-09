@@ -19,12 +19,21 @@ public abstract class Creep implements Visited, Tickable, Drawable, Comparable<C
 	protected int _slowDuration;
 	protected int _slowTime;
 	
+	
+	public int getX(){
+		return _x;
+	}
+	
+	public int getY(){
+		return _y;
+	}
+	
 	@Override
 	public int compareTo(Creep other){
 		if(other==null)
 			throw new IllegalArgumentException("Cannot compare creep to null");
 		
-		return (getNumOfStepsTaken()-other.getNumOfStepsTaken());
+		return (-1)*(getNumOfStepsTaken()-other.getNumOfStepsTaken());
 	}
 	
 	public int getNumOfStepsTaken(){
