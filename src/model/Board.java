@@ -3,14 +3,23 @@ package model;
 import java.util.Vector;
 
 public class Board implements Tickable{
-	private Direction[][] _directionBoard;
-	private Tower[][] _towers;
-	private Creep[][][] _creeps;
+	
 	private int _xSize;
 	private int _ySize;
-	private Spawner _spawner;
+	
+	private Direction[][] _directionBoard;
 	private Vector<Integer> _inGate;
 	private Vector<Integer> _outGate;
+	
+	private Spawner _spawner;
+	private Tower[][] _towers;
+	private Creep[][][] _creeps;
+	
+	private Vector<Creep> _deadCreeps;
+	private Vector<Creep> _victoriousCreeps;
+
+	private int _playerHealth;
+	private int wave;
 	
 	private static int _maxNumOfCreepsInCell = 2;  //To allow a ninja with another creep
 	
@@ -40,6 +49,18 @@ public class Board implements Tickable{
 	
 	public int getYsize(){
 		return _ySize;
+	}
+	
+	public int getPlayerHealth(){
+		return _playerHealth;
+	}
+	
+	public Tower[][] getTowers(){
+		return _towers;
+	}
+	
+	public Creep[][][] getCreeps(){
+		return _creeps;
 	}
 	
 	public Vector<Creep> getCreepsInRange(int x, int y, int range){
@@ -90,11 +111,12 @@ public class Board implements Tickable{
 	}
 	
 	public boolean playerWon() {
+		return (_spawner.isEmpty() & _creeps.length)
 		// TODO Auto-generated method stub
 	}
 	
 	public boolean playerLost() {
-		// TODO Auto-generated method stub
+		return _playerHealth>=0;
 	}
 	
 }
