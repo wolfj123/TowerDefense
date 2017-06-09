@@ -2,7 +2,7 @@ package model;
 
 import javax.swing.ImageIcon;
 
-public abstract class Creep implements Visited, Tickable, Drawable{
+public abstract class Creep implements Visited, Tickable, Drawable, Comparable<Creep>{
 	private int _x;
 	private int _y;
 	private Board _board;
@@ -18,5 +18,17 @@ public abstract class Creep implements Visited, Tickable, Drawable{
 	protected int _slowDMG;
 	protected int _slowDuration;
 	protected int _slowTime;
+	
+	@Override
+	public int compareTo(Creep other){
+		if(other==null)
+			throw new IllegalArgumentException("Cannot compare creep to null");
+		
+		return (getNumOfStepsTaken()-other.getNumOfStepsTaken());
+	}
+	
+	public int getNumOfStepsTaken(){
+		return numOfStepsTaken;
+	}
 	
 }
