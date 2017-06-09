@@ -68,13 +68,20 @@ public class Board implements Tickable{
 	}
 	
 	public boolean addTower(Tower tower) {
-		// TODO Auto-generated method stub
+		boolean spotEmpty = true;
+		for(Tower t : _towers){
+			if(tower.getX()==t.getX() && tower.getY()==t.getY())
+				spotEmpty=false;
+		}
+		if(spotEmpty)
+			return _towers.add(tower);
+		else return false;
 	}
 	
 	public boolean addCreep(Creep creep) {
 		if(_creeps.contains(creep)) return false;
 		
-		
+		return _creeps.add(creep);
 	}
 	
 	public Direction getDirection(int x, int y){
@@ -83,7 +90,6 @@ public class Board implements Tickable{
 		
 		return _directionBoard[x][y];
 	}
-
 	
 	@Override
 	public void tickHappend() {

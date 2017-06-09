@@ -28,8 +28,8 @@ public class Spawner implements Tickable{
 		
 	}
 	
-	
-	public void TickHappend() {
+	@Override
+	public void tickHappened() {
 		if(isEmpty()) return;
 		// TODO Auto-generated method stub
 		

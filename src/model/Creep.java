@@ -29,6 +29,13 @@ public abstract class Creep implements Visited, Tickable, Drawable, Comparable<C
 	}
 	
 	@Override
+	public void tickHappened(){
+		
+		
+	}
+	
+	
+	@Override
 	public int compareTo(Creep other){
 		if(other==null)
 			throw new IllegalArgumentException("Cannot compare creep to null");
