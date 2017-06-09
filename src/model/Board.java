@@ -2,7 +2,7 @@ package model;
 
 import java.util.Vector;
 
-public class Board implements Tickable{
+public class Board extends Tickable{
 	
 	private int _xSize;
 	private int _ySize;

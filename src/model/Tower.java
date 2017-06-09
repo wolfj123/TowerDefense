@@ -6,7 +6,7 @@ public abstract class Tower extends Tickable implements Visitor{
 	private int _x;
 	private int _y;
 	final int _range;
-	private Board _board;
+	protected Board _board;
 	private boolean _isAttacking;
 	
 	public Tower(int x, int y, int range, Board board, int ticksBeforeAction) {
