@@ -9,7 +9,7 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	private Board _board;
 	private boolean _isUnderAttack;
 	private ImageIcon _characterIcon;
-	private int numOfStepsTaken; //to see which one to target
+	private int _numOfStepsTaken; //to see which one to target
 	
 	protected int _poisonModifier;
 	protected int _poisonDuration;
@@ -54,6 +54,10 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	
 	public boolean isAlive(){
 		return _health>0;
+	}
+	
+	public boolean isUnderAttack(){
+		return _isUnderAttack;
 	}
 	
 	public void inflictDamage(int dmg){
@@ -127,6 +131,6 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	}
 	
 	public int getNumOfStepsTaken(){
-		return numOfStepsTaken;
+		return _numOfStepsTaken;
 	}
 }
