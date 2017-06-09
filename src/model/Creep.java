@@ -9,6 +9,7 @@ public abstract class Creep implements Visited, Tickable, Drawable{
 	private boolean _isUnderAttack;
 	private ImageIcon _characterIcon;
 	private int _ticksUntilMove;
+	private int numOfStepsTaken; //to see which one to target
 	
 	protected int _poisonDMG;
 	protected int _poisonDuration;
