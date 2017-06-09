@@ -2,13 +2,12 @@ package model;
 
 import javax.swing.ImageIcon;
 
-public abstract class Creep extends Tickable implements Visited, Drawable, Comparable<Creep>{
+public abstract class Creep extends Tickable implements Visited, Comparable<Creep>{
 	private int _x;
 	private int _y;
 	private int _health;
 	private Board _board;
 	private boolean _isUnderAttack;
-	private ImageIcon _characterIcon;
 	private int _numOfStepsTaken; //to see which one to target
 	
 	protected int _poisonModifier;
@@ -22,6 +21,7 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		super(ticksBeforeAction);
 		_x = x;
 		_y = y;
+		_health = 100;
 		_board = board;
 		_isUnderAttack = false;
 		
@@ -90,6 +90,7 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		return _ticksBeforeAction*_slowModifier;
 	}
 	
+	@Override
 	public void impact(Tower t){ 
 		t.visit(this); 
 	}
@@ -103,6 +104,7 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		Direction direction = _board.getDirection(getX(), getY()); 
 		setX(getX() + direction.getX());
 		setY(getY() + direction.getY());
+		_numOfStepsTaken+=1;
 	}
 	
 	@Override

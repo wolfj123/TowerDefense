@@ -1,5 +1,5 @@
 package model;
 
 public interface Visited {
-	void impact(Visitor v);
+	void impact(Tower t);
 }
