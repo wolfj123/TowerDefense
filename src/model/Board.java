@@ -106,4 +106,11 @@ public class Board implements Tickable{
 		return _playerHealth>=0;
 	}
 	
+	public int getNumOfDeadCreeps(){
+		return _deadCreeps.size();
+	}
+	
+	public int getNumOfVictoriousCreeps(){
+		return _victoriousCreeps.size();
+	}
 }
