@@ -9,5 +9,4 @@ public interface Visitor {
 	void visit(CreepKnight knight);
 	
 	void visit(CreepNinja ninja);
-	
 }
