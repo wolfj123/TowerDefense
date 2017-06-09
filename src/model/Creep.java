@@ -2,23 +2,38 @@ package model;
 
 import javax.swing.ImageIcon;
 
-public abstract class Creep implements Visited, Tickable, Drawable, Comparable<Creep>{
+public abstract class Creep extends Tickable implements Visited, Drawable, Comparable<Creep>{
 	private int _x;
 	private int _y;
+	private int _health;
 	private Board _board;
 	private boolean _isUnderAttack;
 	private ImageIcon _characterIcon;
-	private int _ticksUntilMove;
 	private int numOfStepsTaken; //to see which one to target
 	
-	protected int _poisonDMG;
+	protected int _poisonModifier;
 	protected int _poisonDuration;
-	protected int _poisonTime;
+	protected int _poisonTicks;
 	
-	protected int _slowDMG;
+	protected int _slowModifier;
 	protected int _slowDuration;
-	protected int _slowTime;
+	protected int _slowTicks;
 	
+	
+	public Creep(int x, int y, int ticksBeforeAction, Board board){
+		super(ticksBeforeAction);
+		_x = x;
+		_y = y;
+		_board = board;
+		_isUnderAttack = false;
+		
+		_poisonModifier=1;
+		_poisonDuration=0;
+		_poisonTicks=0;
+		
+		_slowDuration=0;
+		_slowTicks=0;
+	}
 	
 	public int getX(){
 		return _x;
@@ -28,12 +43,67 @@ public abstract class Creep implements Visited, Tickable, Drawable, Comparable<C
 		return _y;
 	}
 	
-	@Override
-	public void tickHappened(){
-		
-		
+	public void setX(int x){
+		_x=x;
 	}
 	
+	public void setY(int y){
+		_y=y;
+	}
+	
+	public boolean isAlive(){
+		return _health>0;
+	}
+	
+	public void inflictDamage(int dmg){
+		_health -=_poisonModifier * dmg;
+		_isUnderAttack = true;
+	}
+	
+	private void calculatePoison(){
+		_poisonTicks+=1;
+		if(_poisonTicks>=_poisonDuration){
+			_poisonModifier=1;
+			_poisonTicks=0;
+		}
+	}
+	
+	public void inflictPoison(int poisonModifier, int poisonDuration){
+		if(poisonModifier>=_poisonModifier) _poisonModifier = poisonModifier;
+		if(poisonDuration>=_poisonDuration) _poisonDuration = poisonDuration;
+	}
+	
+	private void calculateSlow(){
+		_slowTicks+=1;
+		if(_slowTicks>=_slowDuration){
+			_slowModifier=2;
+			_slowTicks=0;
+		}
+	}
+	
+	public void inflictSlow(int slowDuration){
+		if(slowDuration>=_slowDuration) _slowDuration = slowDuration;
+	}
+	
+	public void impact(Tower t){ 
+		t.visit(this); 
+	}
+	
+	@Override
+	public void tickAction(){
+		move();
+	}
+	
+	private void move(){
+		Direction direction = _board.getDirection(getX(), getY()); 
+		setX(getX() + direction.getX());
+		setY(getY() + direction.getY());
+	}
+	
+	@Override
+	public void tickPassive(){
+		_isUnderAttack = false;
+	}
 	
 	@Override
 	public int compareTo(Creep other){
@@ -46,5 +116,4 @@ public abstract class Creep implements Visited, Tickable, Drawable, Comparable<C
 	public int getNumOfStepsTaken(){
 		return numOfStepsTaken;
 	}
-	
 }
