@@ -31,6 +31,7 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		_poisonDuration=0;
 		_poisonTicks=0;
 		
+		_slowModifier = 1;
 		_slowDuration=0;
 		_slowTicks=0;
 	}
@@ -60,29 +61,39 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 		_isUnderAttack = true;
 	}
 	
-	private void calculatePoison(){
-		_poisonTicks+=1;
-		if(_poisonTicks>=_poisonDuration){
-			_poisonModifier=1;
-			_poisonTicks=0;
-		}
-	}
-	
 	public void inflictPoison(int poisonModifier, int poisonDuration){
 		if(poisonModifier>=_poisonModifier) _poisonModifier = poisonModifier;
 		if(poisonDuration>=_poisonDuration) _poisonDuration = poisonDuration;
 	}
 	
-	private void calculateSlow(){
-		_slowTicks+=1;
-		if(_slowTicks>=_slowDuration){
-			_slowModifier=2;
-			_slowTicks=0;
+	private void calculatePoison(){
+		if(_poisonDuration<=0) return;
+		_poisonTicks+=1;
+		if(_poisonTicks>=_poisonDuration){
+			_poisonModifier=1;
+			_poisonTicks=0;
+			_poisonDuration=0;
 		}
 	}
 	
-	public void inflictSlow(int slowDuration){
+	public void inflictSlow(int slowDuration, int slowModifier){
+		if(slowModifier>=_slowModifier) _slowModifier = slowModifier;
 		if(slowDuration>=_slowDuration) _slowDuration = slowDuration;
+	}
+	
+	private void calculateSlow(){
+		if(_slowDuration<=0) return;
+		_slowTicks+=1;
+		if(_slowTicks>=_slowDuration){
+			_slowModifier=1;
+			_slowTicks=0;
+			_slowDuration=0;
+		}
+	}
+	
+	@Override
+	public int getTicksBeforeAction(){
+		return _ticksBeforeAction*_slowModifier;
 	}
 	
 	public void impact(Tower t){ 
@@ -102,6 +113,8 @@ public abstract class Creep extends Tickable implements Visited, Drawable, Compa
 	
 	@Override
 	public void tickPassive(){
+		calculatePoison();
+		calculateSlow();
 		_isUnderAttack = false;
 	}
 	
