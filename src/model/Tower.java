@@ -3,8 +3,8 @@ package model;
 import java.util.Vector;
 
 public abstract class Tower extends Tickable implements Visitor{
-	private int _x;
-	private int _y;
+	protected int _x;
+	protected int _y;
 	final int _range;
 	protected Board _board;
 	private boolean _isAttacking;

@@ -40,7 +40,24 @@ public class TowerDragon extends Tower {
 	}
 
 	
+	//Random movement (can move diagonally as well)
 	private void move(){
-		//TODO: decide how the dargon moves
+		int xMove = 0;
+		int yMove = 0;
+		
+		if(getX()<=0) xMove = 1;
+		else if(getX()>=_board.getXsize()-1) xMove = -1;
+		else xMove = 
+				(int) ( Math.floor(Math.random()*3)-3 );
+	
+		if(getY()<=0) yMove = 1;
+		else if(getY()>=_board.getYsize()-1) yMove = -1;
+		else yMove = 
+				(int) ( Math.floor(Math.random()*3)-3 );
+		
+		_x += xMove;
+		_y += yMove;
 	}
+	
+	
 }
