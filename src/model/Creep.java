@@ -1,7 +1,5 @@
 package model;
 
-import javax.swing.ImageIcon;
-
 public abstract class Creep extends Tickable implements Visited, Comparable<Creep>{
 	private int _x;
 	private int _y;
@@ -50,6 +48,12 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	
 	public boolean isAlive(){
 		return _health>0;
+	}
+	
+	public boolean isVictorious(){
+		
+		
+		
 	}
 	
 	public boolean isUnderAttack(){

@@ -122,8 +122,27 @@ public class Board extends Tickable{
 
 	@Override
 	protected void tickPassive() {
-		//fire towers
-		//advance creeps
+		//TODO: ticks for board
+		
+		//Fire towers
+		for(Tower t : _towers){
+			t.tickHappened();
+		}
+		
+		//Remove dead creeps
+		
+		
+		//Remove victorious creeps
+		
+		
+		//Advance alive creeps
+		_creeps.sort(null);
+		for(Creep c : _creeps){
+			c.tickHappened();
+		}
+		
+		
+
 		//remove dead and victorious creeps
 		//verify win/lose conditions
 		
@@ -149,11 +168,11 @@ public class Board extends Tickable{
 		int x = (inGate) ? 0 : directionBoard.length-1;
 		boolean foundGate = false;
 		Coords gate = null;
-		for(int i=0; i<directionBoard[x].length & !foundGate; i++){
-			Coords current = directionBoard[x][i];
+		for(int y=0; y<directionBoard[x].length & !foundGate; y++){
+			Coords current = directionBoard[x][y];
 			if(current.getX()==1){
 				foundGate = true;
-				gate = current;
+				gate = new Coords(x,y);
 			}
 		}
 		return gate;
