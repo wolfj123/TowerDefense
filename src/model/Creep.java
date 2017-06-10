@@ -90,7 +90,6 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 		return _ticksBeforeAction*_slowModifier;
 	}
 	
-	//TODO: maybe this needs to be in the sub-classes?
 	
 	@Override
 	public void tickAction(){
