@@ -1,17 +1,19 @@
 package model;
 
 import java.util.Collections;
-import java.util.Queue;
 import java.util.Vector;
 
 public class Spawner extends Tickable{
 	private Board _board;
 	private Vector<Creep> _list;
 	
-	public Spawner(int wave, int x, int y, Board board) {
+	public Spawner(int wave, Coords position, Board board) {
 		super(2);
 		_board = board;	
 		_list = new Vector<Creep>();
+		
+		int x = position.getX();
+		int y = position.getY();
 		
 		int n = 0;
 		switch(wave){
