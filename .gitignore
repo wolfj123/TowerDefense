@@ -54,3 +54,8 @@ local.properties
 
 
 # End of https://www.gitignore.io/api/eclipse
+TowerDefense.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
