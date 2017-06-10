@@ -5,15 +5,11 @@ import java.util.Queue;
 import java.util.Vector;
 
 public class Spawner extends Tickable{
-	private int _x;
-	private int _y;
 	private Board _board;
 	private Vector<Creep> _list;
 	
 	public Spawner(int wave, int x, int y, Board board) {
-		super(1);
-		_x = x;
-		_y = y;
+		super(2);
 		_board = board;	
 		_list = new Vector<Creep>();
 		

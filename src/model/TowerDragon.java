@@ -30,12 +30,17 @@ public class TowerDragon extends Tower {
 	
 	@Override
 	protected void tickAction(){
-		// TODO Auto-generated method stub
+		super.tickAction();
+		move();
 	}
 	
 	@Override
 	protected void tickPassive(){
-		// TODO Auto-generated method stub
+		_wingsUp = !_wingsUp;
 	}
 
+	
+	private void move(){
+		//TODO: decide how the dargon moves
+	}
 }

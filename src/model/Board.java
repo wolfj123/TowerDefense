@@ -3,6 +3,9 @@ package model;
 import java.util.Vector;
 
 public class Board extends Tickable{
+
+	private int _playerHealth;
+	private int _wave;
 	
 	private int _xSize;
 	private int _ySize;
@@ -14,13 +17,14 @@ public class Board extends Tickable{
 	private Spawner _spawner;
 	private Vector<Tower> _towers;
 	private Vector<Creep> _creeps;
-	private Vector<Creep> _deadCreeps;
-	private Vector<Creep> _victoriousCreeps;
+	private int _deadCreeps;
+	private int _victoriousCreeps;
 
-	private int _playerHealth;
-	private int wave;
+
 	
-	public Board(Direction[][] directionBoard){
+	public Board(Direction[][] directionBoard) {
+		super(2);
+		
 		_directionBoard = directionBoard;
 		
 		_xSize = directionBoard.length;
@@ -28,7 +32,12 @@ public class Board extends Tickable{
 		
 		_towers = new Vector<Tower>();
 		_creeps = new Vector<Creep>();
+		
+		_playerHealth = 100;
+		_wave = 1;
+		_spawner = new Spawner(_wave, x, y, this);
 	}
+
 	
 	public int getXsize(){
 		return _xSize;
@@ -92,10 +101,15 @@ public class Board extends Tickable{
 	}
 	
 	@Override
-	public void tickHappend() {
+	protected void tickAction() {
 		// TODO Auto-generated method stub
-		//Make spawner insert after moving all creeps
-		//Sort all creeps and move them by their leader
+		
+	}
+
+	@Override
+	protected void tickPassive() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public boolean playerWon() {
@@ -107,10 +121,13 @@ public class Board extends Tickable{
 	}
 	
 	public int getNumOfDeadCreeps(){
-		return _deadCreeps.size();
+		return _deadCreeps;
 	}
 	
 	public int getNumOfVictoriousCreeps(){
-		return _victoriousCreeps.size();
+		return _victoriousCreeps;
 	}
+
+
+
 }
