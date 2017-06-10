@@ -41,7 +41,6 @@ public class Board extends Tickable{
 		_wave = 1;
 		_spawner = new Spawner(_wave, _inGate, this);
 	}
-
 	
 	public int getXsize(){
 		return _xSize;
@@ -62,6 +61,18 @@ public class Board extends Tickable{
 	public Vector<Creep> getCreeps(){
 		_creeps.sort(null);
 		return _creeps;
+	}
+	
+	public Coords[][] getDirectionBoard(){
+		return _directionBoard;
+	}
+	
+	public int getNumOfDeadCreeps(){
+		return _deadCreeps;
+	}
+	
+	public int getNumOfVictoriousCreeps(){
+		return _victoriousCreeps;
 	}
 	
 	public int getWave(){
@@ -126,6 +137,9 @@ public class Board extends Tickable{
 		//Verify stop conditions
 		if(playerWon() | playerLost()) return;
 		
+		//Spawn creeps
+		_spawner.tickHappened();
+		
 		//Fire towers
 		for(Tower t : _towers){
 			t.tickHappened();
@@ -156,14 +170,6 @@ public class Board extends Tickable{
 	
 	public boolean playerLost() {
 		return _playerHealth>=0;
-	}
-	
-	public int getNumOfDeadCreeps(){
-		return _deadCreeps;
-	}
-	
-	public int getNumOfVictoriousCreeps(){
-		return _victoriousCreeps;
 	}
 
 	private Coords findGate(Coords[][] directionBoard, boolean inGate){
