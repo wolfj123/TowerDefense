@@ -1,7 +1,5 @@
 package model;
 
-import javax.swing.ImageIcon;
-
 public abstract class Creep extends Tickable implements Visited, Comparable<Creep>{
 	private int _x;
 	private int _y;
@@ -52,6 +50,12 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 		return _health>0;
 	}
 	
+	public boolean isVictorious(){
+		
+		
+		
+	}
+	
 	public boolean isUnderAttack(){
 		return _isUnderAttack;
 	}
@@ -97,7 +101,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	}
 	
 	private void move(){
-		Direction direction = _board.getDirection(getX(), getY()); 
+		Coords direction = _board.getDirection(getX(), getY()); 
 		setX(getX() + direction.getX());
 		setY(getY() + direction.getY());
 		_numOfStepsTaken+=1;

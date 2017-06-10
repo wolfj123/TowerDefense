@@ -10,9 +10,9 @@ public class Board extends Tickable{
 	private int _xSize;
 	private int _ySize;
 	
-	private Direction[][] _directionBoard;
-	private Vector<Integer> _inGate;
-	private Vector<Integer> _outGate;
+	private Coords[][] _directionBoard;
+	private Coords _inGate;
+	private Coords _outGate;
 	
 	private Spawner _spawner;
 	private Vector<Tower> _towers;
@@ -20,22 +20,25 @@ public class Board extends Tickable{
 	private int _deadCreeps;
 	private int _victoriousCreeps;
 
-
-	
-	public Board(Direction[][] directionBoard) {
+	public Board(Coords[][] directionBoard) {
 		super(2);
 		
 		_directionBoard = directionBoard;
-		
 		_xSize = directionBoard.length;
 		_ySize = directionBoard[0].length;
+		
+		_inGate = findGate(directionBoard, true);
+		_outGate = findGate(directionBoard, false);
+		
+		if(_inGate==null || _outGate==null)
+			throw new IllegalArgumentException("Could not find inGate/outGate in direction matrix");
 		
 		_towers = new Vector<Tower>();
 		_creeps = new Vector<Creep>();
 		
 		_playerHealth = 100;
 		_wave = 1;
-		_spawner = new Spawner(_wave, x, y, this);
+		_spawner = new Spawner(_wave, _inGate, this);
 	}
 
 	
@@ -58,6 +61,18 @@ public class Board extends Tickable{
 	public Vector<Creep> getCreeps(){
 		_creeps.sort(null);
 		return _creeps;
+	}
+	
+	public int getWave(){
+		return _wave;
+	}
+	
+	public void setWave(int wave){
+		if(wave<1 | wave>5)
+			throw new IllegalArgumentException("wave number must be 1-5");
+		
+		_wave = wave;
+		_spawner = new Spawner(_wave, _inGate, this);
 	}
 	
 	public Vector<Creep> getCreepsInRange(int x, int y, int range){
@@ -93,7 +108,7 @@ public class Board extends Tickable{
 		return _creeps.add(creep);
 	}
 	
-	public Direction getDirection(int x, int y){
+	public Coords getDirection(int x, int y){
 		if(x<0 | x>= _xSize | y<0 | y>=_ySize)
 			throw new IndexOutOfBoundsException("x/y coordinates outside of board.");
 		
@@ -102,13 +117,34 @@ public class Board extends Tickable{
 	
 	@Override
 	protected void tickAction() {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 
 	@Override
 	protected void tickPassive() {
-		// TODO Auto-generated method stub
+		//TODO: ticks for board
+		
+		//Fire towers
+		for(Tower t : _towers){
+			t.tickHappened();
+		}
+		
+		//Remove dead creeps
+		
+		
+		//Remove victorious creeps
+		
+		
+		//Advance alive creeps
+		_creeps.sort(null);
+		for(Creep c : _creeps){
+			c.tickHappened();
+		}
+		
+		
+
+		//remove dead and victorious creeps
+		//verify win/lose conditions
 		
 	}
 	
@@ -128,6 +164,17 @@ public class Board extends Tickable{
 		return _victoriousCreeps;
 	}
 
-
-
+	private Coords findGate(Coords[][] directionBoard, boolean inGate){
+		int x = (inGate) ? 0 : directionBoard.length-1;
+		boolean foundGate = false;
+		Coords gate = null;
+		for(int y=0; y<directionBoard[x].length & !foundGate; y++){
+			Coords current = directionBoard[x][y];
+			if(current.getX()==1){
+				foundGate = true;
+				gate = new Coords(x,y);
+			}
+		}
+		return gate;
+	}
 }
