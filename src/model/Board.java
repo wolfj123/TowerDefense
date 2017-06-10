@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 public class Board extends Tickable{
@@ -122,30 +123,31 @@ public class Board extends Tickable{
 
 	@Override
 	protected void tickPassive() {
-		//TODO: ticks for board
+		//Verify stop conditions
+		if(playerWon() | playerLost()) return;
 		
 		//Fire towers
 		for(Tower t : _towers){
 			t.tickHappened();
 		}
 		
-		//Remove dead creeps
-		
-		
-		//Remove victorious creeps
-		
-		
-		//Advance alive creeps
-		_creeps.sort(null);
-		for(Creep c : _creeps){
-			c.tickHappened();
+		//Remove dead/victorious creeps, advance alive creeps
+		Iterator<Creep> iter = _creeps.iterator();
+		while(iter.hasNext()){
+			Creep creep = iter.next();
+			if(!creep.isAlive()){
+				_creeps.remove(creep);
+				_deadCreeps+=1;
+			}
+			else if(creep.isVictorious()){
+				_creeps.remove(creep);
+				_victoriousCreeps+=1;
+				_playerHealth-=1;
+			}
+			else{
+				creep.tickHappened();
+			}
 		}
-		
-		
-
-		//remove dead and victorious creeps
-		//verify win/lose conditions
-		
 	}
 	
 	public boolean playerWon() {

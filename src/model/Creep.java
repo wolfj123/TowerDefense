@@ -51,9 +51,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	}
 	
 	public boolean isVictorious(){
-		
-		
-		
+		return (getX()>=_board.getXsize());
 	}
 	
 	public boolean isUnderAttack(){
