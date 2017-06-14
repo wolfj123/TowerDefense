@@ -21,6 +21,10 @@ public class Coords {
 	public int getY(){
 		return _y;		
 	}
+
+	public String toString (){
+		return "["+_x+","+_y+"] ";
+	}
 	
 	//TODO: Maybe add icon depending whether is grass or path?
 }
