@@ -20,6 +20,7 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
         super ("Tower Defense");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // get all info needed for level names
         Vector <String> levelNames = new Vector <String>();
         LevelLoader levelLoader = new LevelLoader();
         levelLoader.Load();
@@ -37,9 +38,14 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
         JScrollPane scrolList = new JScrollPane(_levelNamesJlist);
         _levelNamesJlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); /// enable selecting only one level
 
-        JSplitPane screen = new JSplitPane(JSplitPane.VERTICAL_SPLIT,UpperPanel(),scrolList);
+        //JSplitPane screen = new JSplitPane(JSplitPane.VERTICAL_SPLIT,UpperPanel(),scrolList);
 
-        this.add(screen);
+        this.setLayout(new BorderLayout());
+        this.add(UpperPanel(),BorderLayout.NORTH);
+        this.add(_levelNamesJlist,BorderLayout.SOUTH);
+
+
+       // this.add(screen);
         this.pack();
         this.setVisible(true);
     }
@@ -65,8 +71,13 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
         LevelLoadFrame levelFrame = new LevelLoadFrame();
     }
 
+    /***
+     * MouseListener to begin a new game
+     * @param e
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
+        // create new game
         int selectedLevel =  _levelNamesJlist.getSelectedIndex();
         GameFrame gameFrame = new GameFrame(selectedLevel);
         this.dispose();
