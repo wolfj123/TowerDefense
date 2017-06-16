@@ -22,7 +22,8 @@ public class GamePanel extends JPanel {
     private boolean _showChooseTower;
     private Board _gameBoard;
 
-    public GamePanel (Coords [][] levelCoord,ImageIcon path,ImageIcon grass,Board gameBoard){
+
+    public GamePanel (Coords [][] levelCoord,ImageIcon path,ImageIcon grass,Board gameBoard,ImageIcon [] creeps, ImageIcon [] towers){
         super();
         _pathIcon = path;
         _grassIcon = grass;
@@ -30,7 +31,8 @@ public class GamePanel extends JPanel {
         this.setSize(800,800);
         _showChooseTower=false;
         _gameBoard=gameBoard;
-
+        _creepsIcons = creeps;
+        _towersIcons = towers;
     }
 
     public void set_showChooseTower(boolean _showChooseTower) {
@@ -40,9 +42,10 @@ public class GamePanel extends JPanel {
     public void paint (Graphics graphics){
         super.paint(graphics);
         DrawBackground(graphics);
-       // DrawRadius(graphics);
+        DrawRadius(graphics);
+
         DrawHitAndFire(graphics);
-        getDrawTowes(graphics);
+        DrawTowes(graphics);
         DrawCreeps(graphics);
     }
 
@@ -54,8 +57,12 @@ public class GamePanel extends JPanel {
         //TODO
     }
 
-    private void getDrawTowes(Graphics graphics) {
-        //TODO
+    private void DrawTowes(Graphics graphics) {
+        Vector<Tower> towers =  _gameBoard.getTowers();
+        for (Tower t : towers){
+            int index = EnumTowers.valueOf(t.getClass().getSimpleName()).getIndex();
+            _towersIcons[index].paintIcon(this,graphics,getX()*32,getY()*32+1);
+        }
     }
 
 
@@ -65,10 +72,10 @@ public class GamePanel extends JPanel {
         Vector<Tower> towers = _gameBoard.getTowers();
         for (Tower t : towers) {
             if (t.get_showRadius()) {
-                for (int i = 0; i < t.getRange(); i++) {
-                    for (int j = 0; j < t.getRange(); j++) {
+                for (int i = 0; i <= t.getRange()*2; i++) {
+                    for (int j = 0; j <= t.getRange()*2; j++) {
                         try {
-                            graphics.fillRect(((t.getX()*32) - (t.getRange() * 32) + j + 2), ((t.getY()*32) - (t.getRange() * 32) + i + 2), 28, 28);
+                            graphics.fillRect(((t.getX()*32) - (t.getRange() * 32) + j*32 + 2), ((t.getY()*32) - (t.getRange() * 32) + i*32 + 2), 28, 28);
                         }
                         catch (Exception e){
 

@@ -1,23 +1,15 @@
 package View;
 
 import com.sun.istack.internal.Nullable;
-import model.Board;
-import model.Coords;
-import model.LevelLoader;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import model.Tower;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.management.ObjectInstance;
-import javax.management.Query;
-import javax.swing.*;
-import java.awt.*;
 import java.util.Vector;
 
 
@@ -51,9 +43,11 @@ public class GameFrame extends JFrame implements MouseListener {
         _pathCoords = levelLoader.getLevel(levelNum);
         SetIconSize();
         _gameRunnig = false;
-        //_gameBoard = new Board(_pathCoords); //TODO
-
-
+        _gameBoard = new Board(_pathCoords);
+        //test show radius***************** //TODO delete
+        TowerArrow dd = new TowerArrow(5,5,_gameBoard);
+        dd.set_showRadius(true);
+        _gameBoard.addTower(dd);
 
         //set toolbar
         CreateToolBar();
@@ -70,10 +64,15 @@ public class GameFrame extends JFrame implements MouseListener {
         this.setResizable(false);
 
 
+
+
     }
 
+    /**
+     * paints a new JPanel of the game board
+     */
     private void PaintNewGamePanel (){
-        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon,_gameBoard);
+        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon,_gameBoard,_creepsIcons,_towerIcons);
         this.add(gamePainting,BorderLayout.CENTER);
         this.revalidate();
         this.repaint();
@@ -125,31 +124,62 @@ public class GameFrame extends JFrame implements MouseListener {
 
         _towerIcons = new ImageIcon[8];
         //tower arrow
-        sizeable = towerArrow.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerArrow.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerArrow.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerArrow.getIndex()] = new ImageIcon(sizeable);
         //tower lava
-        sizeable = towerLava.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerLava.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerLava.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerLava.getIndex()] = new ImageIcon(sizeable);
         //tower magic
-        sizeable = towerMagic.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerMagic.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerMagic.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerMagic.getIndex()] = new ImageIcon(sizeable);
         // tower poison
-        sizeable = towerPoison.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerPoison.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerPoison.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerPoison.getIndex()] = new ImageIcon(sizeable);
         //tower goku
-        sizeable = towerGoku.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerGoku.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerGoku.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerGoku.getIndex()] = new ImageIcon(sizeable);
         //tower drug
-        sizeable = towerDrug.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.TowerDrug.getIndex()] = new ImageIcon(sizeable);
+        sizeable = towerDrug.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerDrug.getIndex()] = new ImageIcon(sizeable);
         //tower dino1
-        sizeable = dino1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.Dino1.getIndex()] = new ImageIcon(sizeable);
+        sizeable = dino1.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerDragon1.getIndex()] = new ImageIcon(sizeable);
         //dino 2
-        sizeable = dino2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
-        _towerIcons[EnumTowers.Towers.Dino2.getIndex()] = new ImageIcon(sizeable);
+        sizeable = dino2.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.TowerDragon2.getIndex()] = new ImageIcon(sizeable);
 
         //create Creeps
+        ImageIcon abir1 = new ImageIcon(this.getClass().getResource("/creeps/abir-1.png"));
+        ImageIcon abir2 = new ImageIcon(this.getClass().getResource("/creeps/abir-2.png"));
+        ImageIcon  guli1= new ImageIcon(this.getClass().getResource("/creeps/guli-1.png"));
+        ImageIcon  guli2= new ImageIcon(this.getClass().getResource("/creeps/guli-2.png"));
+        ImageIcon  mike1= new ImageIcon(this.getClass().getResource("/creeps/mike-1.png"));
+        ImageIcon  mike2= new ImageIcon(this.getClass().getResource("/creeps/mike-2.png"));
+        ImageIcon  naji1= new ImageIcon(this.getClass().getResource("/creeps/naji-1.png"));
+        ImageIcon  naji2= new ImageIcon(this.getClass().getResource("/creeps/naji-2.png"));
+
+        _creepsIcons = new ImageIcon[8];
+
+        //creep knight
+        sizeable = abir1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepKnight1.get_index()] = new ImageIcon(sizeable);
+        sizeable = abir2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepKnight2.get_index()] = new ImageIcon(sizeable);
+        //creep skull
+        sizeable = guli1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepSkull1.get_index()] = new ImageIcon(sizeable);
+        sizeable = guli2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepSkull2.get_index()] = new ImageIcon(sizeable);
+        //creep alien
+        sizeable = mike1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepAlien1.get_index()] = new ImageIcon(sizeable);
+        sizeable = mike2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepAlien2.get_index()] = new ImageIcon(sizeable);
+        //creep ninja
+        sizeable = naji1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepNinja1.get_index()] = new ImageIcon(sizeable);
+        sizeable = naji2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _creepsIcons[EnumCreeps.CreepNinja2.get_index()] = new ImageIcon(sizeable);
 
 
     }
@@ -163,10 +193,10 @@ public class GameFrame extends JFrame implements MouseListener {
         System.out.println("X = "+xSquare);
         System.out.println("Y = "+ySquare);
 
-        if (!IsGrass(xSquare,ySquare)) {
+        if (IsGrass(xSquare,ySquare)) {
             Tower tower = CheckForTowerInSquare(xSquare,ySquare);
             if (tower != null) {
-                /*tower.set_showRadius(!tower.get_showRadius());*///TODO - remove /**/
+                tower.set_showRadius(!tower.get_showRadius());
                 PaintNewGamePanel();
             } else if (!_gameRunnig) {
                 //TODO show choose tower
