@@ -176,8 +176,8 @@ public class Board extends Tickable{
 		int x = (inGate) ? 0 : directionBoard.length-1;
 		boolean foundGate = false;
 		Coords gate = null;
-		for(int y=0; y<directionBoard[x].length & !foundGate; y++){
-			Coords current = directionBoard[x][y];
+		for(int y=0; y<directionBoard.length & !foundGate; y++){
+			Coords current = directionBoard[y][x];
 			if(current.getX()==1){
 				foundGate = true;
 				gate = new Coords(x,y);
