@@ -1,5 +1,6 @@
 package View;
 
+import com.sun.istack.internal.Nullable;
 import model.Board;
 import model.Coords;
 import model.LevelLoader;
@@ -10,11 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import model.Tower;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.management.ObjectInstance;
 import javax.management.Query;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 
 /**
@@ -32,6 +36,8 @@ public class GameFrame extends JFrame implements MouseListener {
 
     private ImageIcon _pathIcon;
     private ImageIcon _grassIcon;
+    private ImageIcon [] _towerIcons;
+    private ImageIcon [] _creepsIcons;
 
     boolean _gameRunnig;
 
@@ -56,8 +62,7 @@ public class GameFrame extends JFrame implements MouseListener {
 
 
         //create game panel
-        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon,_gameBoard);
-        this.add(gamePainting,BorderLayout.CENTER);
+        PaintNewGamePanel();
 
 
         this.addMouseListener(this);
@@ -65,6 +70,13 @@ public class GameFrame extends JFrame implements MouseListener {
         this.setResizable(false);
 
 
+    }
+
+    private void PaintNewGamePanel (){
+        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon,_gameBoard);
+        this.add(gamePainting,BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
 
     private void CreateToolBar(){
@@ -100,17 +112,97 @@ public class GameFrame extends JFrame implements MouseListener {
         //path icon
         sizeable = tempPathIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
         _pathIcon = new ImageIcon(sizeable);
+
+        //createTowers
+        ImageIcon towerArrow = new ImageIcon(this.getClass().getResource("/towers/2.png"));
+        ImageIcon towerLava = new ImageIcon(this.getClass().getResource("/towers/1.png"));
+        ImageIcon towerMagic = new ImageIcon(this.getClass().getResource("/towers/4.png"));
+        ImageIcon towerPoison = new ImageIcon(this.getClass().getResource("/towers/3.png"));
+        ImageIcon towerGoku = new ImageIcon(this.getClass().getResource("/towers/6.png"));
+        ImageIcon towerDrug = new ImageIcon(this.getClass().getResource("/towers/5.png"));
+        ImageIcon dino1 =  new ImageIcon(this.getClass().getResource("/towers/dino-1.png"));
+        ImageIcon dino2 = new ImageIcon(this.getClass().getResource("/towers/dino-2.png"));
+
+        _towerIcons = new ImageIcon[8];
+        //tower arrow
+        sizeable = towerArrow.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerArrow.getIndex()] = new ImageIcon(sizeable);
+        //tower lava
+        sizeable = towerLava.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerLava.getIndex()] = new ImageIcon(sizeable);
+        //tower magic
+        sizeable = towerMagic.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerMagic.getIndex()] = new ImageIcon(sizeable);
+        // tower poison
+        sizeable = towerPoison.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerPoison.getIndex()] = new ImageIcon(sizeable);
+        //tower goku
+        sizeable = towerGoku.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerGoku.getIndex()] = new ImageIcon(sizeable);
+        //tower drug
+        sizeable = towerDrug.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.TowerDrug.getIndex()] = new ImageIcon(sizeable);
+        //tower dino1
+        sizeable = dino1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.Dino1.getIndex()] = new ImageIcon(sizeable);
+        //dino 2
+        sizeable = dino2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        _towerIcons[EnumTowers.Towers.Dino2.getIndex()] = new ImageIcon(sizeable);
+
+        //create Creeps
+
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("X = "+e.getX());
         System.out.println("Y = "+e.getY());
-        int xBLock = (e.getX()-4)/32;
-        int yBlock = (e.getY()-74)/32;
-        System.out.println("X = "+xBLock);
-        System.out.println("Y = "+yBlock);
+        int xSquare = (e.getX()-4)/32;
+        int ySquare = (e.getY()-74)/32;
+        System.out.println("X = "+xSquare);
+        System.out.println("Y = "+ySquare);
 
+        if (!IsGrass(xSquare,ySquare)) {
+            Tower tower = CheckForTowerInSquare(xSquare,ySquare);
+            if (tower != null) {
+                /*tower.set_showRadius(!tower.get_showRadius());*///TODO - remove /**/
+                PaintNewGamePanel();
+            } else if (!_gameRunnig) {
+                //TODO show choose tower
+                throw new NotImplementedException();
+            }
+        }
+    }
+
+    /***
+     * check if a tower exsits in a crurent square
+     * @param x
+     * @param y
+     * @return the tower if exsits or null if doesn't
+     */
+    @Nullable
+    private Tower CheckForTowerInSquare (int x, int y){
+        Vector<Tower> towers = _gameBoard.getTowers();
+        for (Tower t : towers){
+            if (t.getX()==x & t.getY()==y){
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * check if a square is a grass square or a path square
+     * @param x
+     * @param y
+     * @return true - if a grass square
+     */
+    private boolean IsGrass (int x,int y) {
+        if (_pathCoords[x][y].getY()!=0 | _pathCoords[x][y].getY()!=0){
+            return false;
+        }
+        return true;
     }
 
     @Override

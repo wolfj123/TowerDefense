@@ -8,6 +8,7 @@ public abstract class Tower extends Tickable implements Visitor{
 	final int _range;
 	protected Board _board;
 	private boolean _isAttacking;
+	private boolean _showRadius;
 	
 	public Tower(int x, int y, int range, Board board, int ticksBeforeAction) {
 		super(ticksBeforeAction);
@@ -16,6 +17,7 @@ public abstract class Tower extends Tickable implements Visitor{
 		_range = range;
 		_board = board;
 		_isAttacking = false;
+		_showRadius = false;
 	}
 	
 	public int getX(){
@@ -47,6 +49,12 @@ public abstract class Tower extends Tickable implements Visitor{
 	protected void tickPassive(){
 		_isAttacking=false;
 	}
-	
-	
+
+	public void set_showRadius(boolean _showRadius) {
+		this._showRadius = _showRadius;
+	}
+
+	public boolean get_showRadius (){
+		return _showRadius;
+	}
 }

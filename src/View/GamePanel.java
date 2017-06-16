@@ -1,9 +1,11 @@
 package View;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 /**
  * Created by ariel on 16-Jun-17.
@@ -28,6 +30,7 @@ public class GamePanel extends JPanel {
         this.setSize(800,800);
         _showChooseTower=false;
         _gameBoard=gameBoard;
+
     }
 
     public void set_showChooseTower(boolean _showChooseTower) {
@@ -37,7 +40,7 @@ public class GamePanel extends JPanel {
     public void paint (Graphics graphics){
         super.paint(graphics);
         DrawBackground(graphics);
-        DrawRadius(graphics);
+       // DrawRadius(graphics);
         DrawHitAndFire(graphics);
         getDrawTowes(graphics);
         DrawCreeps(graphics);
@@ -57,8 +60,27 @@ public class GamePanel extends JPanel {
 
 
     private void DrawRadius(Graphics graphics) {
-        //TODO
+        graphics.setColor(Color.white);
+        //test        graphics.fillRect(2,2,28,28);
+        Vector<Tower> towers = _gameBoard.getTowers();
+        for (Tower t : towers) {
+            if (t.get_showRadius()) {
+                for (int i = 0; i < t.getRange(); i++) {
+                    for (int j = 0; j < t.getRange(); j++) {
+                        try {
+                            graphics.fillRect(((t.getX()*32) - (t.getRange() * 32) + j + 2), ((t.getY()*32) - (t.getRange() * 32) + i + 2), 28, 28);
+                        }
+                        catch (Exception e){
+
+                        }
+                    }
+                }
+            }
+        }
+        graphics.setColor(Color.black);
     }
+
+
 
     private void DrawBackground(Graphics graphics){
         for (int i=0;i<_pathCoords.length;i++){
