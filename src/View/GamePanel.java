@@ -10,23 +10,54 @@ import java.awt.*;
  */
 public class GamePanel extends JPanel {
 
-    ImageIcon _pathIcon;
-    ImageIcon _grassIcon;
+    private ImageIcon _pathIcon;
+    private ImageIcon _grassIcon;
+    private ImageIcon [] _towersIcons;
+    private ImageIcon [] _creepsIcons;
 
-    Coords [][] _pathCoords;
+    private Coords [][] _pathCoords;
 
-    public GamePanel (Coords [][] levelCoord,ImageIcon path,ImageIcon grass){
+    private boolean _showChooseTower;
+    private Board _gameBoard;
+
+    public GamePanel (Coords [][] levelCoord,ImageIcon path,ImageIcon grass,Board gameBoard){
         super();
         _pathIcon = path;
         _grassIcon = grass;
         _pathCoords = levelCoord;
         this.setSize(800,800);
+        _showChooseTower=false;
+        _gameBoard=gameBoard;
     }
 
+    public void set_showChooseTower(boolean _showChooseTower) {
+        this._showChooseTower = _showChooseTower;
+    }
 
     public void paint (Graphics graphics){
         super.paint(graphics);
         DrawBackground(graphics);
+        DrawRadius(graphics);
+        DrawHitAndFire(graphics);
+        getDrawTowes(graphics);
+        DrawCreeps(graphics);
+    }
+
+    private void DrawHitAndFire(Graphics graphics) {
+        //TODO
+    }
+
+    private void DrawCreeps(Graphics graphics) {
+        //TODO
+    }
+
+    private void getDrawTowes(Graphics graphics) {
+        //TODO
+    }
+
+
+    private void DrawRadius(Graphics graphics) {
+        //TODO
     }
 
     private void DrawBackground(Graphics graphics){

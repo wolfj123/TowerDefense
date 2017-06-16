@@ -6,6 +6,8 @@ import model.LevelLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
@@ -18,28 +20,31 @@ import java.awt.*;
 /**
  * Created by ariel on 11-Jun-17.
  */
-public class GameFrame extends JFrame {
+public class GameFrame extends JFrame implements MouseListener {
 
-    JLabel _lifeLabel;
-    JLabel _waveLabel;
-    JToolBar _toolBar;
-    boolean _gameSpeed; // true - normal speed, false - double speed
+    private JLabel _lifeLabel;
+    private JLabel _waveLabel;
+    private JToolBar _toolBar;
+    private  boolean _gameSpeed; // true - normal speed, false - double speed
 
-    Board _gameBoard;
-    Coords [][] _pathCoords;
+    private Board _gameBoard;
+    private Coords [][] _pathCoords;
 
-    ImageIcon _pathIcon;
-    ImageIcon _grassIcon;
+    private ImageIcon _pathIcon;
+    private ImageIcon _grassIcon;
+
+    boolean _gameRunnig;
 
 
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         //Load level
         _pathCoords = levelLoader.getLevel(levelNum);
         SetIconSize();
+        _gameRunnig = false;
         //_gameBoard = new Board(_pathCoords); //TODO
 
 
@@ -51,10 +56,14 @@ public class GameFrame extends JFrame {
 
 
         //create game panel
-        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon);
+        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon,_gameBoard);
         this.add(gamePainting,BorderLayout.CENTER);
-        //gamePainting.paint(getGraphics());
-        this.setSize(830,_toolBar.getHeight()+850);
+
+
+        this.addMouseListener(this);
+        this.setSize(805,877);
+        this.setResizable(false);
+
 
     }
 
@@ -91,5 +100,36 @@ public class GameFrame extends JFrame {
         //path icon
         sizeable = tempPathIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
         _pathIcon = new ImageIcon(sizeable);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("X = "+e.getX());
+        System.out.println("Y = "+e.getY());
+        int xBLock = (e.getX()-4)/32;
+        int yBlock = (e.getY()-74)/32;
+        System.out.println("X = "+xBLock);
+        System.out.println("Y = "+yBlock);
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
