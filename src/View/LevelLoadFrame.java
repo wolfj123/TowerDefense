@@ -15,6 +15,7 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
 
     JLabel _levleSelectText = new JLabel("Welcome to Tower Defese - please select level below and press start game");
     JList<String> _levelNamesJlist;
+    LevelLoader _levelLoader;
 
     public LevelLoadFrame() throws IOException{
         super ("Tower Defense");
@@ -22,9 +23,9 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
 
         // get all info needed for level names
         Vector <String> levelNames = new Vector <String>();
-        LevelLoader levelLoader = new LevelLoader();
-        levelLoader.Load();
-        int numberOfLevels = levelLoader.numOfLeveles();
+         _levelLoader = new LevelLoader();
+        _levelLoader.Load();
+        int numberOfLevels = _levelLoader.numOfLeveles();
 
         //create level names
         for (int i=1;i<=numberOfLevels;i++){
@@ -76,10 +77,10 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
      * @param e
      */
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e)  {
         // create new game
         int selectedLevel =  _levelNamesJlist.getSelectedIndex();
-        GameFrame gameFrame = new GameFrame(selectedLevel);
+        GameFrame gameFrame = new GameFrame(selectedLevel,_levelLoader);
         this.dispose();
     }
 
