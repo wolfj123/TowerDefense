@@ -7,6 +7,13 @@ import model.LevelLoader;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
+import javax.management.ObjectInstance;
+import javax.management.Query;
+import javax.swing.*;
+import java.awt.*;
+
 
 /**
  * Created by ariel on 11-Jun-17.
@@ -21,36 +28,34 @@ public class GameFrame extends JFrame {
     Board _gameBoard;
     Coords [][] _pathCoords;
 
-    ImageIcon _pathIcon;// =
-    ImageIcon _grassIcon;// =
+    ImageIcon _pathIcon;
+    ImageIcon _grassIcon;
 
 
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        //Load level
 
+        //Load level
         _pathCoords = levelLoader.getLevel(levelNum);
-        for (int i=0;i<_pathCoords.length;i++) {
-            for (int j = 0; j < _pathCoords[0].length; j++)
-                System.out.print(_pathCoords[i][j]);
-            System.out.println();
-        }
-        _gameBoard = new Board(_pathCoords);
         SetIconSize();
+        //_gameBoard = new Board(_pathCoords); //TODO
+
+
 
         //set toolbar
         CreateToolBar();
         this.add(_toolBar,BorderLayout.NORTH);
-        //create game panel
-        this.add(CreateBackground(),BorderLayout.SOUTH);
-
-
-
-
-        this.pack();
         this.setVisible(true);
+
+
+        //create game panel
+        GamePanel gamePainting = new GamePanel(_pathCoords,_pathIcon,_grassIcon);
+        this.add(gamePainting,BorderLayout.CENTER);
+        //gamePainting.paint(getGraphics());
+        this.setSize(830,_toolBar.getHeight()+850);
+
     }
 
     private void CreateToolBar(){
@@ -72,22 +77,9 @@ public class GameFrame extends JFrame {
         _toolBar.add(startWave);
     }
 
-    private JPanel CreateBackground (){
-        JPanel gameBoard = new JPanel();
-        gameBoard.setSize(800,800);
-        for (int i=0;i<_pathCoords.length;i++) {
-            for (int j = 0; j < _pathCoords[i].length; j++) {
-                if (_pathCoords[i][j].getX() != 0 | _pathCoords[i][j].getY() != 0) {
-                    _pathIcon.paintIcon(gameBoard, getGraphics(), i * 32, j * 32);
-                } else {
-                    _grassIcon.paintIcon(gameBoard, getGraphics(), i * 32, j * 32);
-                }
-            }
-        }
-
-        return gameBoard;
-    }
-
+    /***
+     * scale icons to correct size
+     */
     private void SetIconSize (){
         ImageIcon tempPathIcon = new ImageIcon(this.getClass().getResource("/background/Path_Icon.jpg"));
         ImageIcon tempGrassIcon = new ImageIcon(this.getClass().getResource("/background/Grass_Icon.jpg"));
@@ -99,6 +91,5 @@ public class GameFrame extends JFrame {
         //path icon
         sizeable = tempPathIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
         _pathIcon = new ImageIcon(sizeable);
-
     }
 }
