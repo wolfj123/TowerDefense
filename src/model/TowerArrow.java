@@ -8,12 +8,14 @@ public class TowerArrow extends Tower {
 
 	@Override
 	public void visit(CreepSkull creep) {
+		_isAttacking=true;
 		creep.inflictDamage(15);
 
 	}
 
 	@Override
 	public void visit(CreepAlien creep) {
+		_isAttacking=true;
 		creep.inflictDamage(30);
 
 	}
@@ -21,12 +23,14 @@ public class TowerArrow extends Tower {
 	//TODO: maybe add null effect?
 	@Override
 	public void visit(CreepKnight creep) {
+		_isAttacking=true;
 		creep.inflictDamage(0);
 
 	}
 
 	@Override
 	public void visit(CreepNinja creep) {
+		_isAttacking=true;
 		creep.inflictDamage(30);
 
 	}

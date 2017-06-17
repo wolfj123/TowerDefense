@@ -14,24 +14,28 @@ public class TowerGoku extends Tower {
 
 	@Override
 	public void visit(CreepSkull creep) {
+		_isAttacking=true;
 		creep.inflictDamage(10*_h);
 		calculateH();
 	}
 
 	@Override
 	public void visit(CreepAlien creep) {
+		_isAttacking=true;
 		creep.inflictDamage(5*_h);
 		calculateH();
 	}
 
 	@Override
 	public void visit(CreepKnight creep) {
+		_isAttacking=true;
 		creep.inflictDamage(7*_h);
 		calculateH();
 	}
 
 	@Override
 	public void visit(CreepNinja creep) {
+		_isAttacking=true;
 		creep.inflictDamage(5*_h);
 		calculateH();
 	}

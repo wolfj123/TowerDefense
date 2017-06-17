@@ -62,8 +62,8 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	}
 	
 	public void inflictDamage(int dmg){
-		_health -=_poisonModifier * dmg;
 		_isUnderAttack = true;
+		_health -=_poisonModifier * dmg;
 	}
 	
 	public void inflictPoison(double poisonModifier, int poisonDuration){

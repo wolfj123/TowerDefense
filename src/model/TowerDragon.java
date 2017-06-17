@@ -13,21 +13,25 @@ public class TowerDragon extends Tower {
 	
 	@Override
 	public void visit(CreepSkull creep) {
+		_isAttacking=true;
 		creep.inflictDamage(15);
 	}
 
 	@Override
 	public void visit(CreepAlien creep) {
+		_isAttacking=true;
 		creep.inflictDamage(10);
 	}
 
 	@Override
 	public void visit(CreepKnight creep) {
+		_isAttacking=true;
 		creep.inflictDamage(8);
 	}
 
 	@Override
 	public void visit(CreepNinja creep) {
+		_isAttacking=true;
 		creep.inflictDamage(11);
 	}
 	
