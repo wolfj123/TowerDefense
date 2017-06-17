@@ -43,6 +43,7 @@ public class TowerDragon extends Tower {
 	
 	@Override
 	protected void tickPassive(){
+		super.tickPassive();
 		_wingsUp = !_wingsUp;
 	}
 
