@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
         DrawRadius(graphics);
         DrawHitAndFire(graphics);
         DrawCreeps(graphics);
-        DrawTowes(graphics);
+        DrawTowers(graphics);
     }
 
     private void DrawHitAndFire(Graphics graphics) {
@@ -86,26 +86,28 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void DrawTowes(Graphics graphics) {
+    private void DrawTowers(Graphics graphics) {
         Vector<Tower> towers =  _gameBoard.getTowers();
-        for (Tower t : towers){
+        for (Tower t : towers) {
             //check if a tower is a dragon
             if (!(t instanceof TowerDragon)) {
                 //paint towers that arent dragons
                 int index = EnumTowers.valueOf(t.getClass().getSimpleName()).getIndex();
-                _towersIcons[index].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
+                _towersIcons[index].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 48));
             }
-            else {
+        }
+        //paint dragons
+        for (Tower t : towers) {
+            if (t instanceof  TowerDragon){
                 //paint dragon 1 or
                 if (((TowerDragon) t).get_wingsUp()) {
-                    String index = t.getClass().getSimpleName()+"1";
-                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
-                    ((TowerDragon)t).set_wingsUp(false);
-                }
-                else{
-                    String index = t.getClass().getSimpleName()+"2";
-                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
-                    ((TowerDragon)t).set_wingsUp(true);
+                    String index = t.getClass().getSimpleName() + "1";
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32)-16, ((t.getY() * 32) - 48));
+                    ((TowerDragon) t).set_wingsUp(false);
+                } else {
+                    String index = t.getClass().getSimpleName() + "2";
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32)-16, ((t.getY() * 32) - 48));
+                    ((TowerDragon) t).set_wingsUp(true);
                 }
             }
         }
