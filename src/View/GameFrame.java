@@ -1,6 +1,6 @@
 package View;
 
-import com.sun.istack.internal.Nullable;
+//import com.sun.istack.internal.Nullable;
 import model.*;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Vector;
 
@@ -259,7 +259,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 //check if the game isn't running to enable adding more towers
                 else if (!_gameRunnig) {
                     //TODO show choose tower
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
             }
         }
@@ -271,7 +271,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      * @param y
      * @return the tower if exsits or null if doesn't
      */
-    @Nullable
+    //@Nullable
     private Tower CheckForTowerInSquare (int x, int y){
         Vector<Tower> towers = _gameBoard.getTowers();
         for (Tower t : towers){

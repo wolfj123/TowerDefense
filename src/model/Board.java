@@ -169,7 +169,7 @@ public class Board extends Tickable{
 	}
 	
 	public boolean playerLost() {
-		return _playerHealth>=0;
+		return _playerHealth<=0;
 	}
 
 	private Coords findGate(Coords[][] directionBoard, boolean inGate){
