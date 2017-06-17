@@ -214,6 +214,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
             //start game if needed
             if (!_gameRunnig){
                 _gameRunnig=true;
+                _gameBoard.setWave(_gameBoard.getWave());
                 _timer.start();
             }
         }
@@ -320,12 +321,11 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO - update life??
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
+        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO neceseary
     }
+    //TODO - start game - waiting for wolf
 
-    //TODO - change _timer speed
-    //TODO - start game
     //TODO - add new TOWER
 }
