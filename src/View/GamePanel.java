@@ -1,6 +1,5 @@
 package View;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import model.*;
 
 import javax.swing.*;
@@ -43,25 +42,72 @@ public class GamePanel extends JPanel {
         super.paint(graphics);
         DrawBackground(graphics);
         DrawRadius(graphics);
-
         DrawHitAndFire(graphics);
         DrawTowes(graphics);
         DrawCreeps(graphics);
     }
 
     private void DrawHitAndFire(Graphics graphics) {
-        //TODO
+        //draw firing towers
+        Vector<Tower> towers =  _gameBoard.getTowers();
+        for (Tower t : towers) {
+            if (t.isAttacking()){
+                graphics.setColor(Color.blue);
+                graphics.fillRect((t.getX()*32+2),(t.getY()*32+2),28,28);
+            }
+        }
+        //draw creeps getting hit
+        Vector<Creep> creeps = _gameBoard.getCreeps();
+        for (Creep c : creeps){
+            if (c.isUnderAttack()){
+                graphics.setColor(Color.red);
+                graphics.fillRect((c.getX()*32+2),(c.getY()*32+2),28,28);
+            }
+        }
+        //reset color
+        graphics.setColor(Color.black);
     }
 
     private void DrawCreeps(Graphics graphics) {
-        //TODO
+        Vector<Creep> creeps = _gameBoard.getCreeps();
+        for (Creep c : creeps){
+            //draw creeps first icon
+            if (c.get_picPos()){
+                String index = c.getClass().getSimpleName()+"1";
+                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*32),(c.getY()*32));
+                c.set_picPos(false);
+            }
+            //draw creeps second icon
+            else {
+                String index = c.getClass().getSimpleName()+"2";
+                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*32),(c.getY()*32));
+                c.set_picPos(true);
+            }
+        }
     }
 
     private void DrawTowes(Graphics graphics) {
         Vector<Tower> towers =  _gameBoard.getTowers();
         for (Tower t : towers){
-            int index = EnumTowers.valueOf(t.getClass().getSimpleName()).getIndex();
-            _towersIcons[index].paintIcon(this,graphics,getX()*32,getY()*32+1);
+            //check if a tower is a dragon
+            if (!(t instanceof TowerDragon)) {
+                //paint towers that arent dragons
+                int index = EnumTowers.valueOf(t.getClass().getSimpleName()).getIndex();
+                _towersIcons[index].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
+            }
+            else {
+                //paint dragon 1 or
+                if (((TowerDragon) t).get_wingsUp()) {
+                    String index = t.getClass().getSimpleName()+"1";
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
+                    ((TowerDragon)t).set_wingsUp(false);
+                }
+                else{
+                    String index = t.getClass().getSimpleName()+"2";
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 16));
+                    ((TowerDragon)t).set_wingsUp(true);
+                }
+            }
         }
     }
 

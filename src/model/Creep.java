@@ -13,6 +13,8 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	
 	protected int _slowModifier;
 	protected int _slowDuration;
+
+	protected boolean _picPos;
 	
 	
 	public Creep(int x, int y, int ticksBeforeAction, Board board){
@@ -28,6 +30,7 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 		
 		_slowModifier = 1;
 		_slowDuration=0;
+		_picPos = true;
 	}
 	
 	public int getX(){
@@ -122,5 +125,13 @@ public abstract class Creep extends Tickable implements Visited, Comparable<Cree
 	
 	public int getNumOfStepsTaken(){
 		return _numOfStepsTaken;
+	}
+
+	public void set_picPos(boolean _picPos) {
+		this._picPos = _picPos;
+	}
+
+	public boolean get_picPos(){
+		return _picPos;
 	}
 }

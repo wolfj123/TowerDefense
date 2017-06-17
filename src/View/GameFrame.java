@@ -44,10 +44,16 @@ public class GameFrame extends JFrame implements MouseListener {
         SetIconSize();
         _gameRunnig = false;
         _gameBoard = new Board(_pathCoords);
+
+
         //test show radius***************** //TODO delete
-        TowerArrow dd = new TowerArrow(5,5,_gameBoard);
+        TowerDragon dd = new TowerDragon(5,5,_gameBoard);
         dd.set_showRadius(true);
         _gameBoard.addTower(dd);
+
+        CreepKnight cp = new CreepKnight(10,10,_gameBoard);
+        _gameBoard.addCreep(cp);
+
 
         //set toolbar
         CreateToolBar();
@@ -195,10 +201,13 @@ public class GameFrame extends JFrame implements MouseListener {
 
         if (IsGrass(xSquare,ySquare)) {
             Tower tower = CheckForTowerInSquare(xSquare,ySquare);
+            //check if an existing tower was clicked
             if (tower != null) {
                 tower.set_showRadius(!tower.get_showRadius());
                 PaintNewGamePanel();
-            } else if (!_gameRunnig) {
+            }
+            //check if the game isn't running to enable adding more towers
+            else if (!_gameRunnig) {
                 //TODO show choose tower
                 throw new NotImplementedException();
             }

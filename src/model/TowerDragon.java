@@ -6,6 +6,7 @@ public class TowerDragon extends Tower {
 	
 	public TowerDragon(int x, int y, Board board) {
 		super(x, y, 2, board, 2);
+		_wingsUp = true;
 	}
 	
 	@Override
@@ -39,8 +40,15 @@ public class TowerDragon extends Tower {
 		_wingsUp = !_wingsUp;
 	}
 
-	
-	//Random movement (can move diagonally as well)
+    public void set_wingsUp(boolean _wingsUp) {
+        this._wingsUp = _wingsUp;
+    }
+
+    public boolean get_wingsUp (){
+	    return _wingsUp;
+    }
+
+    //Random movement (can move diagonally as well)
 	private void move(){
 		int xMove = 0;
 		int yMove = 0;
