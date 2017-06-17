@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.IOException;
 import java.util.Vector;
 
 
@@ -37,21 +38,25 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     private ImageIcon [] _towerIcons;
     private ImageIcon [] _creepsIcons;
 
-    boolean _gameRunnig;
+    private boolean _gameRunnig;
+    private boolean _canContinuePlaying;
 
     private Timer _timer;
     private int _normalSpeed;
     private int _fastSpeed;
 
+
+
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         //Load level
         _pathCoords = levelLoader.getLevel(levelNum);
         SetIconSize();
         _gameRunnig = false;
+        _canContinuePlaying=true;
         _gameBoard = new Board(_pathCoords);
 
         _towerToAdd = new int [7];
@@ -212,58 +217,82 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _waveLabel.setText("wave: "+waveNum);
     }
 
+    public void CheckForGameEnding () throws IOException {
+        //in case of a win
+        if (_gameBoard.playerWon()){
+            _timer.stop();
+            _gameRunnig=false;
+            //prepare check if game ended
+            if (_gameBoard.getWave()<5) {
+                _gameBoard.setWave(_gameBoard.getWave() + 1);
+            }
+            else {
+                _canContinuePlaying=false;
+                JOptionPane.showMessageDialog(null,
+                        "Congratulations you have won!!!!!!!!!!!!!");
+            }
+        }
+        // in case of a lose
+        if (_gameBoard.playerLost()){
+            _canContinuePlaying=false;
+            _timer.stop();
+            _gameRunnig=false;
+            JOptionPane.showMessageDialog(null,
+                    "You have lost - try again");
+        }
+
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        //start game button
-        if (e.getSource()== _startWave){
-            //start game if needed
-            if (!_gameRunnig){
-                _gameRunnig=true;
-                _gameBoard.setWave(_gameBoard.getWave());
-                _timer.start();
-            }
-        }
-        //change speed button
-        else if (e.getSource()== _speedButton){
-            //change speed if game is runnig
-            if (_gameRunnig){
-                //speed up game
-                if (_gameSpeed){
-                    _gameSpeed = false;
-                    _timer.stop();
-                    _timer.setDelay(_fastSpeed);
+        if (_canContinuePlaying) {
+            //start game button
+            if (e.getSource() == _startWave) {
+                //start game if needed
+                if (!_gameRunnig) {
+                    _gameRunnig = true;
+                    _gameBoard.setWave(_gameBoard.getWave());
                     _timer.start();
-                    _speedButton.setText("Double Speed");
-                }
-                //slow down game
-                else{
-                    _gameSpeed = true;
-                    _timer.stop();
-                    _timer.setDelay(_normalSpeed);
-                    _timer.start();
-                    _speedButton.setText("Normal Speed");
                 }
             }
-        }
-        //game board ws clicked
-        else {
-            System.out.println("X = " + e.getX());
-            System.out.println("Y = " + e.getY());
-            int xSquare = (e.getX() - 4) / 32;
-            int ySquare = (e.getY() - 74) / 32;
-            System.out.println("X = " + xSquare);
-            System.out.println("Y = " + ySquare);
-
-            if (IsGrass(xSquare, ySquare)) {
-                Tower tower = CheckForTowerInSquare(xSquare, ySquare);
-                //check if an existing tower was clicked
-                if (tower != null) {
-                    tower.set_showRadius(!tower.get_showRadius());
-                    PaintNewGamePanel();
+            //change speed button
+            else if (e.getSource() == _speedButton) {
+                //change speed if game is runnig
+                if (_gameRunnig) {
+                    //speed up game
+                    if (_gameSpeed) {
+                        _gameSpeed = false;
+                        _timer.stop();
+                        _timer.setDelay(_fastSpeed);
+                        _timer.start();
+                        _speedButton.setText("Double Speed");
+                    }
+                    //slow down game
+                    else {
+                        _gameSpeed = true;
+                        _timer.stop();
+                        _timer.setDelay(_normalSpeed);
+                        _timer.start();
+                        _speedButton.setText("Normal Speed");
+                    }
                 }
-                //check if the game isn't running to enable adding more towers
-                else if (!_gameRunnig) {
-                    ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this,xSquare,ySquare);
+            }
+            //game board ws clicked
+            else {
+                int xSquare = (e.getX() - 4) / 32;
+                int ySquare = (e.getY() - 74) / 32;
+                if (IsGrass(xSquare, ySquare)) {
+                    Tower tower = CheckForTowerInSquare(xSquare, ySquare);
+                    //check if an existing tower was clicked
+                    if (tower != null) {
+                        tower.set_showRadius(!tower.get_showRadius());
+                        PaintNewGamePanel();
+                    }
+                    //check if the game isn't running to enable adding more towers
+                    else if (!_gameRunnig) {
+                        ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd, _towerIcons, this, xSquare, ySquare);
+                        this.disable();
+                    }
                 }
             }
         }
@@ -277,7 +306,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      */
     public void AddTower(int index,int x,int y){
         // check if its possible to add tower
-        if (_towerToAdd[index]>0){
+        if ((_towerToAdd[index]>0)){
             _towerToAdd[index]--;
             Tower addedTower = null;
             //find what type of tower to add
@@ -367,7 +396,12 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
-        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO necessary ?
+        setLifeLeft(_gameBoard.getPlayerHealth());
+        try {
+            CheckForGameEnding();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     //TODO - wave ended

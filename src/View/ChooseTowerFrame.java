@@ -54,6 +54,7 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        _gameFrame.enable();
         int index=-1;
         //find tower index
         for (int i=0;i<_labels[0].length;i++){
@@ -62,7 +63,9 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
                 break;
             }
         }
-        _gameFrame.AddTower(index,_x, _y);
+        if (index!=-1) {
+            _gameFrame.AddTower(index, _x, _y);
+        }
         this.dispose();
     }
 
@@ -84,5 +87,11 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void dispose (){
+        _gameFrame.enable();
+        super.dispose();
     }
 }

@@ -37,7 +37,7 @@ public class Board extends Tickable{
 		_towers = new Vector<Tower>();
 		_creeps = new Vector<Creep>();
 		
-		_playerHealth = 100;
+		_playerHealth = 20;
 		_wave = 1;
 		_spawner = new Spawner(_wave, _inGate, this);
 	}

@@ -78,7 +78,6 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
      */
     @Override
     public void mouseClicked(MouseEvent e)  {
-        this.dispose();
         GameFrame gameFrame = new GameFrame(_levelNamesJlist.getSelectedIndex(),_levelLoader);
     }
 

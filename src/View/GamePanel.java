@@ -43,8 +43,8 @@ public class GamePanel extends JPanel {
         DrawBackground(graphics);
         DrawRadius(graphics);
         DrawHitAndFire(graphics);
-        DrawTowes(graphics);
         DrawCreeps(graphics);
+        DrawTowes(graphics);
     }
 
     private void DrawHitAndFire(Graphics graphics) {
