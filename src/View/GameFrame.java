@@ -30,6 +30,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     private Board _gameBoard;
     private Coords [][] _pathCoords;
+    private int [] _towerToAdd;
 
     private ImageIcon _pathIcon;
     private ImageIcon _grassIcon;
@@ -52,6 +53,12 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         SetIconSize();
         _gameRunnig = false;
         _gameBoard = new Board(_pathCoords);
+
+        _towerToAdd = new int [7];
+        for (int i = 0; i < _towerToAdd.length; i++) {
+            _towerToAdd[i]=3;
+        }
+
         //set timer
         _normalSpeed=500;
         _fastSpeed=250;
@@ -258,8 +265,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 }
                 //check if the game isn't running to enable adding more towers
                 else if (!_gameRunnig) {
-                    //TODO show choose tower
-                    throw new NotImplementedException();
+                    ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this);
                 }
             }
         }
@@ -289,7 +295,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      * @return true - if a grass square
      */
     private boolean IsGrass (int x,int y) {
-        if (_pathCoords[x][y].getY()!=0 | _pathCoords[x][y].getY()!=0){
+        if (_pathCoords[x][y].getX()!=0 | _pathCoords[x][y].getY()!=0){
             return false;
         }
         return true;
@@ -323,9 +329,8 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
-        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO neceseary
+        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO neccesery?
     }
-    //TODO - start game - waiting for wolf
 
     //TODO - add new TOWER
 }
