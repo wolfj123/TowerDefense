@@ -70,14 +70,6 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _timer = new Timer(_normalSpeed,this);
         _timer.setRepeats(true);
 
-
-        //test show radius***************** //TODO delete
-        TowerDragon dd = new TowerDragon(10,10,_gameBoard);
-        dd.set_showRadius(true);
-        _gameBoard.addTower(dd);
-
-
-
         //set toolbar
         CreateToolBar();
         this.add(_toolBar,BorderLayout.NORTH);
@@ -209,15 +201,15 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     }
 
-    public void setLifeLeft(int life){
+    private void setLifeLeft(int life){
         _lifeLabel.setText("life left: "+life);
     }
 
-    public void setWaveNumber (int waveNum){
+    private void setWaveNumber (int waveNum){
         _waveLabel.setText("wave: "+waveNum);
     }
 
-    public void CheckForGameEnding () throws IOException {
+    private void CheckForGameEnding () {
         //in case of a win
         if (_gameBoard.playerWon()){
             _timer.stop();
@@ -234,6 +226,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                         "Congratulations you have won!!!!!!!!!!!!!");
             }
         }
+
         // in case of a lose
         if (_gameBoard.playerLost()){
             _canContinuePlaying=false;
@@ -398,10 +391,6 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
         setLifeLeft(_gameBoard.getPlayerHealth());
-        try {
-            CheckForGameEnding();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        CheckForGameEnding();
     }
 }
