@@ -50,7 +50,6 @@ public class TowerDragon extends Tower {
 	    return _wingsUp;
     }
     
-    //TODO: fix moving out of board
     //Random movement (can move diagonally as well)
 	private void move(){
 		int xMove = 0;
