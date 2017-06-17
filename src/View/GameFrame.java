@@ -67,12 +67,10 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
 
         //test show radius***************** //TODO delete
-        TowerDragon dd = new TowerDragon(5,5,_gameBoard);
+        TowerDragon dd = new TowerDragon(10,10,_gameBoard);
         dd.set_showRadius(true);
         _gameBoard.addTower(dd);
 
-        CreepKnight cp = new CreepKnight(10,10,_gameBoard);
-        _gameBoard.addCreep(cp);
 
 
         //set toolbar
@@ -101,7 +99,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     }
 
     private void CreateToolBar(){
-        //create labels
+        //create _labels
         _lifeLabel = new JLabel("life left: 20");
         _waveLabel =  new JLabel("wave: 1");
         //create buttons
@@ -265,10 +263,50 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 }
                 //check if the game isn't running to enable adding more towers
                 else if (!_gameRunnig) {
-                    ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this);
+                    ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this,xSquare,ySquare);
                 }
             }
         }
+    }
+
+    /***
+     * add new tower to the board
+     * @param index index of tower
+     * @param x
+     * @param y
+     */
+    public void AddTower(int index,int x,int y){
+        // check if its possible to add tower
+        if (_towerToAdd[index]>0){
+            _towerToAdd[index]--;
+            Tower addedTower = null;
+            //find what type of tower to add
+            switch (index){
+                case 0:
+                     addedTower = new TowerArrow(x,y,_gameBoard);
+                     break;
+                case 1:
+                    addedTower = new TowerLava(x,y,_gameBoard);
+                    break;
+                case 2:
+                    addedTower = new TowerMagic(x,y,_gameBoard);
+                    break;
+                case 3:
+                    addedTower = new TowerPoison(x,y,_gameBoard);
+                    break;
+                case 4:
+                    addedTower = new TowerGoku(x,y,_gameBoard);
+                    break;
+                case 5:
+                    addedTower = new TowerDrug(x,y,_gameBoard);
+                    break;
+                case 6:
+                    addedTower = new TowerDragon(x,y,_gameBoard);
+                    break;
+            }
+            _gameBoard.addTower(addedTower);
+        }
+        PaintNewGamePanel();
     }
 
     /***
@@ -295,7 +333,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      * @return true - if a grass square
      */
     private boolean IsGrass (int x,int y) {
-        if (_pathCoords[x][y].getX()!=0 | _pathCoords[x][y].getY()!=0){
+        if (_pathCoords[y][x].getX()!=0 | _pathCoords[y][x].getY()!=0){
             return false;
         }
         return true;
@@ -329,8 +367,8 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
-        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO neccesery?
+        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO necessary ?
     }
 
-    //TODO - add new TOWER
+    //TODO - wave ended
 }

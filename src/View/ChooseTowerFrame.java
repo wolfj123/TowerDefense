@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 /**
  * Created by ariel on 17-Jun-17.
@@ -12,33 +13,38 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
 
 
     GameFrame _gameFrame;
-
-    public ChooseTowerFrame(int [] towersLeft , ImageIcon [] icons,GameFrame gameFrame) {
+    int _x;
+    int _y;
+    JLabel[][] _labels;
+    public ChooseTowerFrame(int [] towersLeft , ImageIcon [] icons,GameFrame gameFrame,int x,int y) {
         super("Tower Defense - Select Tower");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //set layout
         GridLayout gridLayout = new GridLayout(2,7);
         gridLayout.setHgap(30);
         this.setLayout(gridLayout);
-
+        //set fileds
         _gameFrame = gameFrame;
-
-        JLabel[][] labels = new JLabel[2][7];
-        //create icons labels
-        for (int i = 0; i < labels[0].length; i++) {
+        _x=x;
+        _y=y;
+        //create label array
+         _labels = new JLabel[2][7];
+        //create icons _labels
+        for (int i = 0; i < _labels[0].length; i++) {
             Image image = icons[i].getImage();
-            labels[0][i]= new JLabel(new ImageIcon(image));
-            labels[0][i].addMouseListener(this);
+            _labels[0][i]= new JLabel(new ImageIcon(image));
+            _labels[0][i].addMouseListener(this);
         }
         //crate how many left
-        for (int i = 0; i < labels[0].length; i++) {
+        for (int i = 0; i < _labels[0].length; i++) {
             String text = "    " + towersLeft[i];
-            labels[1][i]= new JLabel(text);
+            _labels[1][i]= new JLabel(text);
         }
 
-
-        for (int i = 0; i < labels.length; i++) {
-            for (int j = 0; j < labels[0].length; j++) {
-                this.add(labels[i][j]);
+        //add label array to frame
+        for (int i = 0; i < _labels.length; i++) {
+            for (int j = 0; j < _labels[0].length; j++) {
+                this.add(_labels[i][j]);
             }
         }
 
@@ -48,7 +54,16 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //TODO
+        int index=-1;
+        //find tower index
+        for (int i=0;i<_labels[0].length;i++){
+            if (e.getSource().equals(_labels[0][i])){
+                index = i;
+                break;
+            }
+        }
+        _gameFrame.AddTower(index,_x, _y);
+        this.dispose();
     }
 
     @Override
