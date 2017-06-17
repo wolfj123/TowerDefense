@@ -147,22 +147,28 @@ public class Board extends Tickable{
 			t.tickHappened();
 		}
 		
+		Vector<Creep> toRemove = new Vector<Creep>();
+		
 		//Remove dead/victorious creeps, advance alive creeps
 		Iterator<Creep> iter = _creeps.iterator();
 		while(iter.hasNext()){
 			Creep creep = iter.next();
 			if(!creep.isAlive()){
-				_creeps.remove(creep);
+				toRemove.add(creep);
 				_deadCreeps+=1;
 			}
 			else if(creep.isVictorious()){
-				_creeps.remove(creep);
+				toRemove.add(creep);
 				_victoriousCreeps+=1;
 				_playerHealth-=1;
 			}
 			else{
 				creep.tickHappened();
 			}
+		}
+
+		for(Creep c : toRemove){
+			_creeps.remove(c);
 		}
 	}
 	
