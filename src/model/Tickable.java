@@ -11,7 +11,7 @@ public abstract class Tickable {
 	public void tickHappened(){
 		_ticks+=1;
 		tickPassive();
-		if(_ticks==getTicksBeforeAction()){
+		if(_ticks>=getTicksBeforeAction()){
 			_ticks = 0;
 			tickAction();
 		}
