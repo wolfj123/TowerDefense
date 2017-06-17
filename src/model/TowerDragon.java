@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 public class TowerDragon extends Tower {
 
 	private boolean _wingsUp;
@@ -47,7 +49,7 @@ public class TowerDragon extends Tower {
     public boolean get_wingsUp (){
 	    return _wingsUp;
     }
-
+    
     //Random movement (can move diagonally as well)
 	private void move(){
 		int xMove = 0;
@@ -55,17 +57,19 @@ public class TowerDragon extends Tower {
 		
 		if(getX()<=0) xMove = 1;
 		else if(getX()>=_board.getXsize()-1) xMove = -1;
-		else xMove = 
-				(int) ( Math.floor(Math.random()*3)-3 );
-	
+		else xMove = randomizeMove();
+				
 		if(getY()<=0) yMove = 1;
 		else if(getY()>=_board.getYsize()-1) yMove = -1;
-		else yMove = 
-				(int) ( Math.floor(Math.random()*3)-3 );
+		else yMove = randomizeMove();
 		
 		_x += xMove;
 		_y += yMove;
 	}
 	
+	private int randomizeMove(){
+		Random random = new Random();
+		return random.nextInt(3)-1;
+	}
 	
 }

@@ -265,7 +265,12 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 }
                 //check if the game isn't running to enable adding more towers
                 else if (!_gameRunnig) {
+<<<<<<< HEAD
                     ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this);
+=======
+                    //TODO show choose tower
+                    //throw new NotImplementedException();
+>>>>>>> master
                 }
             }
         }

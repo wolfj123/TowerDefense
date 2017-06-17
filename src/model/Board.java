@@ -90,8 +90,10 @@ public class Board extends Tickable{
 	public Vector<Creep> getCreepsInRange(int x, int y, int range){
 		if(x<0 | x>= _xSize | y<0 | y>=_ySize)
 			throw new IndexOutOfBoundsException("x/y coordinates outside of board.");
-		if(x-range<0 | x+range>= _xSize | y-range<0 | y+range>=_ySize)
-			throw new IndexOutOfBoundsException("range coordinates outside of board.");
+		
+		//TODO: maybe delete?
+		//if(x-range<0 | x+range>= _xSize | y-range<0 | y+range>=_ySize)
+			//throw new IndexOutOfBoundsException("range coordinates outside of board.");
 		
 		Vector<Creep> output = new Vector<Creep>();
 		
@@ -124,7 +126,7 @@ public class Board extends Tickable{
 		if(x<0 | x>= _xSize | y<0 | y>=_ySize)
 			throw new IndexOutOfBoundsException("x/y coordinates outside of board.");
 		
-		return _directionBoard[x][y];
+		return _directionBoard[y][x];
 	}
 	
 	@Override
@@ -145,22 +147,28 @@ public class Board extends Tickable{
 			t.tickHappened();
 		}
 		
+		Vector<Creep> toRemove = new Vector<Creep>();
+		
 		//Remove dead/victorious creeps, advance alive creeps
 		Iterator<Creep> iter = _creeps.iterator();
 		while(iter.hasNext()){
 			Creep creep = iter.next();
 			if(!creep.isAlive()){
-				_creeps.remove(creep);
+				toRemove.add(creep);
 				_deadCreeps+=1;
 			}
 			else if(creep.isVictorious()){
-				_creeps.remove(creep);
+				toRemove.add(creep);
 				_victoriousCreeps+=1;
 				_playerHealth-=1;
 			}
 			else{
 				creep.tickHappened();
 			}
+		}
+
+		for(Creep c : toRemove){
+			_creeps.remove(c);
 		}
 	}
 	
@@ -169,7 +177,7 @@ public class Board extends Tickable{
 	}
 	
 	public boolean playerLost() {
-		return _playerHealth>=0;
+		return _playerHealth<=0;
 	}
 
 	private Coords findGate(Coords[][] directionBoard, boolean inGate){
