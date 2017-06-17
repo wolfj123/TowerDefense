@@ -5,6 +5,8 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -16,12 +18,15 @@ import java.util.Vector;
 /**
  * Created by ariel on 11-Jun-17.
  */
-public class GameFrame extends JFrame implements MouseListener {
+public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     private JLabel _lifeLabel;
     private JLabel _waveLabel;
     private JToolBar _toolBar;
     private  boolean _gameSpeed; // true - normal speed, false - double speed
+
+    private JButton _startWave;
+    private JButton _speedButton;
 
     private Board _gameBoard;
     private Coords [][] _pathCoords;
@@ -33,6 +38,9 @@ public class GameFrame extends JFrame implements MouseListener {
 
     boolean _gameRunnig;
 
+    private Timer _timer;
+    private int _normalSpeed;
+    private int _fastSpeed;
 
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
@@ -44,6 +52,11 @@ public class GameFrame extends JFrame implements MouseListener {
         SetIconSize();
         _gameRunnig = false;
         _gameBoard = new Board(_pathCoords);
+        //set timer
+        _normalSpeed=500;
+        _fastSpeed=250;
+        _timer = new Timer(_normalSpeed,this);
+        _timer.setRepeats(true);
 
 
         //test show radius***************** //TODO delete
@@ -68,10 +81,6 @@ public class GameFrame extends JFrame implements MouseListener {
         this.addMouseListener(this);
         this.setSize(805,877);
         this.setResizable(false);
-
-
-
-
     }
 
     /**
@@ -89,18 +98,18 @@ public class GameFrame extends JFrame implements MouseListener {
         _lifeLabel = new JLabel("life left: 20");
         _waveLabel =  new JLabel("wave: 1");
         //create buttons
-        JButton speedButton = new JButton("Normal Speed");
+        _speedButton = new JButton("Normal Speed");
         _gameSpeed = true;
-        speedButton.addMouseListener(new SpeedListner());
-        JButton startWave = new JButton("Start Wave");
-        startWave.addMouseListener(new NewWaveListner());
+        _speedButton.addMouseListener(this);
+        _startWave = new JButton("Start Wave");
+        _startWave.addMouseListener(this);
         // set tool bar
         _toolBar = new JToolBar();
         _toolBar.setLayout(new FlowLayout());
         _toolBar.add(_lifeLabel);
         _toolBar.add(_waveLabel);
-        _toolBar.add(speedButton);
-        _toolBar.add(startWave);
+        _toolBar.add(_speedButton);
+        _toolBar.add(_startWave);
     }
 
     /***
@@ -190,26 +199,67 @@ public class GameFrame extends JFrame implements MouseListener {
 
     }
 
+    public void setLifeLeft(int life){
+        _lifeLabel.setText("life left: "+life);
+    }
+
+    public void setWaveNumber (int waveNum){
+        _waveLabel.setText("wave: "+waveNum);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("X = "+e.getX());
-        System.out.println("Y = "+e.getY());
-        int xSquare = (e.getX()-4)/32;
-        int ySquare = (e.getY()-74)/32;
-        System.out.println("X = "+xSquare);
-        System.out.println("Y = "+ySquare);
-
-        if (IsGrass(xSquare,ySquare)) {
-            Tower tower = CheckForTowerInSquare(xSquare,ySquare);
-            //check if an existing tower was clicked
-            if (tower != null) {
-                tower.set_showRadius(!tower.get_showRadius());
-                PaintNewGamePanel();
+        //start game button
+        if (e.getSource()== _startWave){
+            //start game if needed
+            if (!_gameRunnig){
+                _gameRunnig=true;
+                _timer.start();
             }
-            //check if the game isn't running to enable adding more towers
-            else if (!_gameRunnig) {
-                //TODO show choose tower
-                throw new NotImplementedException();
+        }
+        //change speed button
+        else if (e.getSource()== _speedButton){
+            //change speed if game is runnig
+            if (_gameRunnig){
+                //speed up game
+                if (_gameSpeed){
+                    _gameSpeed = false;
+                    _timer.stop();
+                    _timer.setDelay(_fastSpeed);
+                    _timer.start();
+                    _speedButton.setText("Double Speed");
+                }
+                //slow down game
+                else{
+                    _gameSpeed = true;
+                    _timer.stop();
+                    _timer.setDelay(_normalSpeed);
+                    _timer.start();
+                    _speedButton.setText("Normal Speed");
+                }
+            }
+        }
+        //game board ws clicked
+        else {
+            System.out.println("X = " + e.getX());
+            System.out.println("Y = " + e.getY());
+            int xSquare = (e.getX() - 4) / 32;
+            int ySquare = (e.getY() - 74) / 32;
+            System.out.println("X = " + xSquare);
+            System.out.println("Y = " + ySquare);
+
+            if (IsGrass(xSquare, ySquare)) {
+                Tower tower = CheckForTowerInSquare(xSquare, ySquare);
+                //check if an existing tower was clicked
+                if (tower != null) {
+                    tower.set_showRadius(!tower.get_showRadius());
+                    PaintNewGamePanel();
+                }
+                //check if the game isn't running to enable adding more towers
+                else if (!_gameRunnig) {
+                    //TODO show choose tower
+                    throw new NotImplementedException();
+                }
             }
         }
     }
@@ -263,4 +313,19 @@ public class GameFrame extends JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    /**
+     * _timer tick
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //TODO - update life??
+        _gameBoard.tickHappened(); // update board logic
+        this.PaintNewGamePanel(); // paint new board
+    }
+
+    //TODO - change _timer speed
+    //TODO - start game
+    //TODO - add new TOWER
 }

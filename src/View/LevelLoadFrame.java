@@ -19,7 +19,7 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
 
     public LevelLoadFrame() throws IOException{
         super ("Tower Defense");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // get all info needed for level names
         Vector <String> levelNames = new Vector <String>();
