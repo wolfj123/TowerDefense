@@ -37,7 +37,7 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
         }
         //crate how many left
         for (int i = 0; i < _labels[0].length; i++) {
-            String text = "    " + towersLeft[i];
+            String text = " towers left: "+ towersLeft[i];
             _labels[1][i]= new JLabel(text);
         }
 
