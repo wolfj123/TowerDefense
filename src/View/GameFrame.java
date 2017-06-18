@@ -218,12 +218,16 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
             if (_gameBoard.getWave()<5) {
                 _gameBoard.setWave(_gameBoard.getWave() + 1);
                 setWaveNumber(_gameBoard.getWave());
+                JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                _gameBoard.getPlayerHealth() + " life left");
             }
             // player won the game
             else {
                 _canContinuePlaying=false;
-                JOptionPane.showMessageDialog(null,
-                        "Congratulations you have won!!!!!!!!!!!!!");
+                JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                        " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                        _gameBoard.getPlayerHealth() + " life left"+ "\n" + "Congratulations you have won!!!!!!!!!!!!!");
             }
         }
 
@@ -232,8 +236,10 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
             _canContinuePlaying=false;
             _timer.stop();
             _gameRunnig=false;
-            JOptionPane.showMessageDialog(null,
-                    "You have lost - try again");
+            JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                    " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                    _gameBoard.getPlayerHealth() + " life left"+"\n"+ "You have lost - try again");
+
         }
 
     }

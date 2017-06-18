@@ -49,6 +49,7 @@ public class ChooseTowerFrame extends JFrame implements MouseListener {
         }
 
         this.pack();
+        this.setResizable(false);
         this.setVisible(true);
     }
 
