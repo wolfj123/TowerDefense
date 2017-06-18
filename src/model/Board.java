@@ -142,11 +142,6 @@ public class Board extends Tickable{
 		//Spawn creeps
 		_spawner.tickHappened();
 		
-		//Fire towers
-		for(Tower t : _towers){
-			t.tickHappened();
-		}
-		
 		Vector<Creep> toRemove = new Vector<Creep>();
 		
 		//Remove dead/victorious creeps, advance alive creeps
@@ -170,6 +165,13 @@ public class Board extends Tickable{
 		for(Creep c : toRemove){
 			_creeps.remove(c);
 		}
+		
+		//Fire towers
+		for(Tower t : _towers){
+			t.tickHappened();
+		}
+		
+
 	}
 	
 	public boolean playerWon() {
