@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.Vector;
 
 /**
- * Created by ariel on 16-Jun-17.
+ * Created by ariel on 12-Jun-17.
  */
 public class GamePanel extends JPanel {
 
@@ -51,19 +51,19 @@ public class GamePanel extends JPanel {
         for (Creep c : creeps){
             if (c.isUnderAttack()){
                 graphics.setColor(Color.red);
-                graphics.fillRect((c.getX()*32+2),(c.getY()*32+2),28,28);
+                graphics.fillRect((c.getX()*25+2),(c.getY()*25+2),21,21);
             }
             graphics.setColor(Color.black);
             //draw creeps first icon
             if (c.get_picPos()){
                 String index = c.getClass().getSimpleName()+"1";
-                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*32),(c.getY()*32));
+                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*25),(c.getY()*25));
                 c.set_picPos(false);
             }
             //draw creeps second icon
             else {
                 String index = c.getClass().getSimpleName()+"2";
-                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*32),(c.getY()*32));
+                _creepsIcons[EnumCreeps.valueOf(index).get_index()].paintIcon(this,graphics,(c.getX()*25),(c.getY()*25));
                 c.set_picPos(true);
             }
         }
@@ -77,12 +77,12 @@ public class GamePanel extends JPanel {
                 //paint firing
                 if (t.isAttacking()){
                     graphics.setColor(Color.blue);
-                    graphics.fillRect((t.getX()*32+2),(t.getY()*32+2),28,28);
+                    graphics.fillRect((t.getX()*25+2),(t.getY()*25+2),21,21);
                 }
                 graphics.setColor(Color.black);
                 //paint towers that arent dragons
                 int index = EnumTowers.valueOf(t.getClass().getSimpleName()).getIndex();
-                _towersIcons[index].paintIcon(this, graphics, (t.getX() * 32), ((t.getY() * 32) - 48));
+                _towersIcons[index].paintIcon(this, graphics, (t.getX() * 25), ((t.getY() * 25) - 37));
             }
         }
         //paint dragons
@@ -91,17 +91,17 @@ public class GamePanel extends JPanel {
                 //paint firing dragon
                 if (t.isAttacking()){
                     graphics.setColor(Color.blue);
-                    graphics.fillRect((t.getX()*32+2),(t.getY()*32+2),28,28);
+                    graphics.fillRect((t.getX()*25+2),(t.getY()*25+2),21,21);
                 }
                 graphics.setColor(Color.black);
                 //paint dragon 1 or
                 if (((TowerDragon) t).get_wingsUp()) {
                     String index = t.getClass().getSimpleName() + "1";
-                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32)-16, ((t.getY() * 32) - 48));
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 25)-12, ((t.getY() * 25) - 37));
                     ((TowerDragon) t).set_wingsUp(false);
                 } else {
                     String index = t.getClass().getSimpleName() + "2";
-                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 32)-16, ((t.getY() * 32) - 48));
+                    _towersIcons[EnumTowers.valueOf(index).getIndex()].paintIcon(this, graphics, (t.getX() * 25)-12, ((t.getY() * 25) - 37));
                     ((TowerDragon) t).set_wingsUp(true);
                 }
             }
@@ -111,14 +111,14 @@ public class GamePanel extends JPanel {
 
     private void DrawRadius(Graphics graphics) {
         graphics.setColor(Color.white);
-        //test        graphics.fillRect(2,2,28,28);
+        //test        graphics.fillRect(2,2,21,21);
         Vector<Tower> towers = _gameBoard.getTowers();
         for (Tower t : towers) {
             if (t.get_showRadius()) {
                 for (int i = 0; i <= t.getRange()*2; i++) {
                     for (int j = 0; j <= t.getRange()*2; j++) {
                         try {
-                            graphics.fillRect(((t.getX()*32) - (t.getRange() * 32) + j*32 + 2), ((t.getY()*32) - (t.getRange() * 32) + i*32 + 2), 28, 28);
+                            graphics.fillRect(((t.getX()*25) - (t.getRange() * 25) + j*25 + 2), ((t.getY()*25) - (t.getRange() * 25) + i*25 + 2), 21, 21);
                         }
                         catch (Exception e){
 
@@ -136,10 +136,10 @@ public class GamePanel extends JPanel {
         for (int i=0;i<_pathCoords.length;i++){
             for (int j=0;j<_pathCoords[i].length;j++){
                 if (_pathCoords[i][j].getY()!=0 | _pathCoords[i][j].getX()!=0){
-                    _pathIcon.paintIcon(this,graphics,j*32,i*32);
+                    _pathIcon.paintIcon(this,graphics,j*25,i*25);
                 }
                 else {
-                    _grassIcon.paintIcon(this,graphics,j*32,i*32);
+                    _grassIcon.paintIcon(this,graphics,j*25,i*25);
                 }
             }
         }

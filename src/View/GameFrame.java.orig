@@ -128,10 +128,10 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
         Image sizeable;
         //Grass Icon
-        sizeable = tempGrassIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = tempGrassIcon.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _grassIcon = new ImageIcon(sizeable);
         //path icon
-        sizeable = tempPathIcon.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = tempPathIcon.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _pathIcon = new ImageIcon(sizeable);
 
         //createTowers
@@ -146,28 +146,28 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
         _towerIcons = new ImageIcon[8];
         //tower arrow
-        sizeable = towerArrow.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerArrow.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerArrow.getIndex()] = new ImageIcon(sizeable);
         //tower lava
-        sizeable = towerLava.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerLava.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerLava.getIndex()] = new ImageIcon(sizeable);
         //tower magic
-        sizeable = towerMagic.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerMagic.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerMagic.getIndex()] = new ImageIcon(sizeable);
         // tower poison
-        sizeable = towerPoison.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerPoison.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerPoison.getIndex()] = new ImageIcon(sizeable);
         //tower goku
-        sizeable = towerGoku.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerGoku.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerGoku.getIndex()] = new ImageIcon(sizeable);
         //tower drug
-        sizeable = towerDrug.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = towerDrug.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDrug.getIndex()] = new ImageIcon(sizeable);
         //tower dino1
-        sizeable = dino1.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = dino1.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDragon1.getIndex()] = new ImageIcon(sizeable);
         //dino 2
-        sizeable = dino2.getImage().getScaledInstance(32,48,Image.SCALE_SMOOTH);
+        sizeable = dino2.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDragon2.getIndex()] = new ImageIcon(sizeable);
 
         //create Creeps
@@ -183,24 +183,24 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _creepsIcons = new ImageIcon[8];
 
         //creep knight
-        sizeable = abir1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = abir1.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepKnight1.get_index()] = new ImageIcon(sizeable);
-        sizeable = abir2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = abir2.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepKnight2.get_index()] = new ImageIcon(sizeable);
         //creep skull
-        sizeable = guli1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = guli1.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepSkull1.get_index()] = new ImageIcon(sizeable);
-        sizeable = guli2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = guli2.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepSkull2.get_index()] = new ImageIcon(sizeable);
         //creep alien
-        sizeable = mike1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = mike1.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepAlien1.get_index()] = new ImageIcon(sizeable);
-        sizeable = mike2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = mike2.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepAlien2.get_index()] = new ImageIcon(sizeable);
         //creep ninja
-        sizeable = naji1.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = naji1.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepNinja1.get_index()] = new ImageIcon(sizeable);
-        sizeable = naji2.getImage().getScaledInstance(32,32,Image.SCALE_SMOOTH);
+        sizeable = naji2.getImage().getScaledInstance(25,25,Image.SCALE_SMOOTH);
         _creepsIcons[EnumCreeps.CreepNinja2.get_index()] = new ImageIcon(sizeable);
 
 
@@ -251,8 +251,8 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         else {
             System.out.println("X = " + e.getX());
             System.out.println("Y = " + e.getY());
-            int xSquare = (e.getX() - 4) / 32;
-            int ySquare = (e.getY() - 74) / 32;
+            int xSquare = (e.getX() - 4) / 25;
+            int ySquare = (e.getY() - 74) / 25;
             System.out.println("X = " + xSquare);
             System.out.println("Y = " + ySquare);
 

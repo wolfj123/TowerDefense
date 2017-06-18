@@ -4,7 +4,7 @@
   router="FAN">  
   <class id="1" language="java" name="model.Board" project="TowerDefense" file="/TowerDefense/src/model/Board.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="152" y="167"/>    
+    <position height="-1" width="-1" x="152" y="127"/>
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -34,7 +34,7 @@
       <attribute id="5" name="_towers">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="6" minimum="0" maximum="2147483647">        
+      <multiplicity id="6" minimum="0" maximum="2147373647">
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
@@ -70,7 +70,7 @@
       <attribute id="14" name="_creeps">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="15" minimum="0" maximum="2147483647">        
+      <multiplicity id="15" minimum="0" maximum="2147373647">
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
