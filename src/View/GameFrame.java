@@ -45,7 +45,8 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     private int _normalSpeed;
     private int _fastSpeed;
 
-
+    private int _slowSpeedCounter;
+    private int _fastSpeedCounter;
 
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
@@ -58,6 +59,9 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _gameRunnig = false;
         _canContinuePlaying=true;
         _gameBoard = new Board(_pathCoords);
+
+        _slowSpeedCounter=0;
+        _fastSpeedCounter=0;
 
         _towerToAdd = new int [7];
         for (int i = 0; i < _towerToAdd.length; i++) {
@@ -209,6 +213,14 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _waveLabel.setText("wave: "+waveNum);
     }
 
+    private double CalculateTime(){
+        double ans=0;
+        double slow = _slowSpeedCounter*_normalSpeed;
+        double fast = _fastSpeedCounter*_fastSpeed;
+        ans = (fast+slow)/1000;
+        return ans;
+    }
+
     private void CheckForGameEnding () {
         //in case of a win
         if (_gameBoard.playerWon()){
@@ -220,14 +232,20 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 setWaveNumber(_gameBoard.getWave());
                 JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
                 " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
-                _gameBoard.getPlayerHealth() + " life left");
+                _gameBoard.getPlayerHealth() + " life left" +"\n"
+                + "it took you: "+CalculateTime()+" seconds");
+                _slowSpeedCounter=0;
+                _fastSpeedCounter=0;
             }
             // player won the game
             else {
                 _canContinuePlaying=false;
                 JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
                         " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
-                        _gameBoard.getPlayerHealth() + " life left"+ "\n" + "Congratulations you have won!!!!!!!!!!!!!");
+                        _gameBoard.getPlayerHealth() + " life left"+"\n"
+                        + "it took you: "+CalculateTime()+" seconds"+ "\n" + "Congratulations you have won!!!!!!!!!!!!!");
+                _slowSpeedCounter=0;
+                _fastSpeedCounter=0;
             }
         }
 
@@ -236,9 +254,14 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
             _canContinuePlaying=false;
             _timer.stop();
             _gameRunnig=false;
+            _slowSpeedCounter=0;
+            _fastSpeedCounter=0;
             JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
                     " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
-                    _gameBoard.getPlayerHealth() + " life left"+"\n"+ "You have lost - try again");
+                    _gameBoard.getPlayerHealth() + " life left"+"\n"
+                    + "it took you: "+CalculateTime()+" seconds"+"\n"+ "You have lost - try again");
+            _slowSpeedCounter=0;
+            _fastSpeedCounter=0;
 
         }
 
@@ -398,5 +421,11 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         this.PaintNewGamePanel(); // paint new board
         setLifeLeft(_gameBoard.getPlayerHealth());
         CheckForGameEnding();
+        if (_timer.getDelay()==_fastSpeed){
+            _fastSpeedCounter++;
+        }
+        else {
+            _slowSpeedCounter++;
+        }
     }
 }
