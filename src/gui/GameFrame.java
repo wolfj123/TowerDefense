@@ -1,9 +1,9 @@
-package View;
-
-//import com.sun.istack.internal.Nullable;
-import model.*;
+package gui;
 
 import javax.swing.*;
+
+import logic.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.IOException;
 import java.util.Vector;
 
 
@@ -37,22 +38,30 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     private ImageIcon [] _towerIcons;
     private ImageIcon [] _creepsIcons;
 
-    boolean _gameRunnig;
+    private boolean _gameRunnig;
+    private boolean _canContinuePlaying;
 
     private Timer _timer;
     private int _normalSpeed;
     private int _fastSpeed;
 
+    private int _slowSpeedCounter;
+    private int _fastSpeedCounter;
+
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         //Load level
         _pathCoords = levelLoader.getLevel(levelNum);
         SetIconSize();
         _gameRunnig = false;
+        _canContinuePlaying=true;
         _gameBoard = new Board(_pathCoords);
+
+        _slowSpeedCounter=0;
+        _fastSpeedCounter=0;
 
         _towerToAdd = new int [7];
         for (int i = 0; i < _towerToAdd.length; i++) {
@@ -65,16 +74,6 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _timer = new Timer(_normalSpeed,this);
         _timer.setRepeats(true);
 
-
-        //test show radius***************** //TODO delete
-        TowerDragon dd = new TowerDragon(5,5,_gameBoard);
-        dd.set_showRadius(true);
-        _gameBoard.addTower(dd);
-
-        CreepKnight cp = new CreepKnight(10,10,_gameBoard);
-        _gameBoard.addCreep(cp);
-
-
         //set toolbar
         CreateToolBar();
         this.add(_toolBar,BorderLayout.NORTH);
@@ -86,7 +85,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
 
         this.addMouseListener(this);
-        this.setSize(805,877);
+        this.setSize(630,702);
         this.setResizable(false);
     }
 
@@ -101,7 +100,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     }
 
     private void CreateToolBar(){
-        //create labels
+        //create _labels
         _lifeLabel = new JLabel("life left: 20");
         _waveLabel =  new JLabel("wave: 1");
         //create buttons
@@ -146,39 +145,39 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
         _towerIcons = new ImageIcon[8];
         //tower arrow
-        sizeable = towerArrow.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerArrow.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerArrow.getIndex()] = new ImageIcon(sizeable);
         //tower lava
-        sizeable = towerLava.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerLava.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerLava.getIndex()] = new ImageIcon(sizeable);
         //tower magic
-        sizeable = towerMagic.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerMagic.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerMagic.getIndex()] = new ImageIcon(sizeable);
         // tower poison
-        sizeable = towerPoison.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerPoison.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerPoison.getIndex()] = new ImageIcon(sizeable);
         //tower goku
-        sizeable = towerGoku.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerGoku.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerGoku.getIndex()] = new ImageIcon(sizeable);
         //tower drug
-        sizeable = towerDrug.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = towerDrug.getImage().getScaledInstance(25,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDrug.getIndex()] = new ImageIcon(sizeable);
         //tower dino1
-        sizeable = dino1.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = dino1.getImage().getScaledInstance(50,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDragon1.getIndex()] = new ImageIcon(sizeable);
         //dino 2
-        sizeable = dino2.getImage().getScaledInstance(25,37,Image.SCALE_SMOOTH);
+        sizeable = dino2.getImage().getScaledInstance(50,62,Image.SCALE_SMOOTH);
         _towerIcons[EnumTowers.TowerDragon2.getIndex()] = new ImageIcon(sizeable);
 
         //create Creeps
         ImageIcon abir1 = new ImageIcon(this.getClass().getResource("/creeps/abir-1.png"));
         ImageIcon abir2 = new ImageIcon(this.getClass().getResource("/creeps/abir-2.png"));
-        ImageIcon  guli1= new ImageIcon(this.getClass().getResource("/creeps/guli-1.png"));
-        ImageIcon  guli2= new ImageIcon(this.getClass().getResource("/creeps/guli-2.png"));
-        ImageIcon  mike1= new ImageIcon(this.getClass().getResource("/creeps/mike-1.png"));
-        ImageIcon  mike2= new ImageIcon(this.getClass().getResource("/creeps/mike-2.png"));
-        ImageIcon  naji1= new ImageIcon(this.getClass().getResource("/creeps/naji-1.png"));
-        ImageIcon  naji2= new ImageIcon(this.getClass().getResource("/creeps/naji-2.png"));
+        ImageIcon guli1= new ImageIcon(this.getClass().getResource("/creeps/guli-1.png"));
+        ImageIcon guli2= new ImageIcon(this.getClass().getResource("/creeps/guli-2.png"));
+        ImageIcon mike1= new ImageIcon(this.getClass().getResource("/creeps/mike-1.png"));
+        ImageIcon mike2= new ImageIcon(this.getClass().getResource("/creeps/mike-2.png"));
+        ImageIcon naji1= new ImageIcon(this.getClass().getResource("/creeps/naji-1.png"));
+        ImageIcon naji2= new ImageIcon(this.getClass().getResource("/creeps/naji-2.png"));
 
         _creepsIcons = new ImageIcon[8];
 
@@ -206,74 +205,161 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     }
 
-    public void setLifeLeft(int life){
+    private void setLifeLeft(int life){
         _lifeLabel.setText("life left: "+life);
     }
 
-    public void setWaveNumber (int waveNum){
+    private void setWaveNumber (int waveNum){
         _waveLabel.setText("wave: "+waveNum);
+    }
+
+    private double CalculateTime(){
+        double ans=0;
+        double slow = _slowSpeedCounter*_normalSpeed;
+        double fast = _fastSpeedCounter*_fastSpeed;
+        ans = (fast+slow)/1000;
+        return ans;
+    }
+
+    private void CheckForGameEnding () {
+        //in case of a win
+        if (_gameBoard.playerWon()){
+            _timer.stop();
+            _gameRunnig=false;
+            //prepare check if game ended
+            if (_gameBoard.getWave()<5) {
+                _gameBoard.setWave(_gameBoard.getWave() + 1);
+                setWaveNumber(_gameBoard.getWave());
+                JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                _gameBoard.getPlayerHealth() + " life left" +"\n"
+                + "it took you: "+CalculateTime()+" seconds");
+                _slowSpeedCounter=0;
+                _fastSpeedCounter=0;
+            }
+            // player won the game
+            else {
+                _canContinuePlaying=false;
+                JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                        " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                        _gameBoard.getPlayerHealth() + " life left"+"\n"
+                        + "it took you: "+CalculateTime()+" seconds"+ "\n" + "Congratulations you have won!!!!!!!!!!!!!");
+                _slowSpeedCounter=0;
+                _fastSpeedCounter=0;
+            }
+        }
+
+        // in case of a lose
+        if (_gameBoard.playerLost()){
+            _canContinuePlaying=false;
+            _timer.stop();
+            _gameRunnig=false;
+            _slowSpeedCounter=0;
+            _fastSpeedCounter=0;
+            JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
+                    " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
+                    _gameBoard.getPlayerHealth() + " life left"+"\n"
+                    + "it took you: "+CalculateTime()+" seconds"+"\n"+ "You have lost - try again");
+            _slowSpeedCounter=0;
+            _fastSpeedCounter=0;
+
+        }
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //start game button
-        if (e.getSource()== _startWave){
-            //start game if needed
-            if (!_gameRunnig){
-                _gameRunnig=true;
-                _gameBoard.setWave(_gameBoard.getWave());
-                _timer.start();
-            }
-        }
-        //change speed button
-        else if (e.getSource()== _speedButton){
-            //change speed if game is runnig
-            if (_gameRunnig){
-                //speed up game
-                if (_gameSpeed){
-                    _gameSpeed = false;
-                    _timer.stop();
-                    _timer.setDelay(_fastSpeed);
+        if (_canContinuePlaying) {
+            //start game button
+            if (e.getSource() == _startWave) {
+                //start game if needed
+                if (!_gameRunnig) {
+                    _gameRunnig = true;
+                    _gameBoard.setWave(_gameBoard.getWave());
                     _timer.start();
-                    _speedButton.setText("Double Speed");
-                }
-                //slow down game
-                else{
-                    _gameSpeed = true;
-                    _timer.stop();
-                    _timer.setDelay(_normalSpeed);
-                    _timer.start();
-                    _speedButton.setText("Normal Speed");
                 }
             }
+            //change speed button
+            else if (e.getSource() == _speedButton) {
+                //change speed if game is runnig
+                if (_gameRunnig) {
+                    //speed up game
+                    if (_gameSpeed) {
+                        _gameSpeed = false;
+                        _timer.stop();
+                        _timer.setDelay(_fastSpeed);
+                        _timer.start();
+                        _speedButton.setText("Double Speed");
+                    }
+                    //slow down game
+                    else {
+                        _gameSpeed = true;
+                        _timer.stop();
+                        _timer.setDelay(_normalSpeed);
+                        _timer.start();
+                        _speedButton.setText("Normal Speed");
+                    }
+                }
+            }
+            //game board ws clicked
+            else {
+                int xSquare = (e.getX() - 4) / 25;
+                int ySquare = (e.getY() - 74) / 25;
+                if (IsGrass(xSquare, ySquare)) {
+                    Tower tower = CheckForTowerInSquare(xSquare, ySquare);
+                    //check if an existing tower was clicked
+                    if (tower != null) {
+                        tower.set_showRadius(!tower.get_showRadius());
+                        PaintNewGamePanel();
+                    }
+                    //check if the game isn't running to enable adding more towers
+                    else if (!_gameRunnig) {
+                        ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd, _towerIcons, this, xSquare, ySquare);
+                        this.disable();
+                    }
+                }
+            }
         }
-        //game board ws clicked
-        else {
-            System.out.println("X = " + e.getX());
-            System.out.println("Y = " + e.getY());
-            int xSquare = (e.getX() - 4) / 25;
-            int ySquare = (e.getY() - 74) / 25;
-            System.out.println("X = " + xSquare);
-            System.out.println("Y = " + ySquare);
+    }
 
-            if (IsGrass(xSquare, ySquare)) {
-                Tower tower = CheckForTowerInSquare(xSquare, ySquare);
-                //check if an existing tower was clicked
-                if (tower != null) {
-                    tower.set_showRadius(!tower.get_showRadius());
-                    PaintNewGamePanel();
-                }
-                //check if the game isn't running to enable adding more towers
-                else if (!_gameRunnig) {
-<<<<<<< HEAD
-                    ChooseTowerFrame chooseTowerFrame = new ChooseTowerFrame(_towerToAdd,_towerIcons,this);
-=======
-                    //TODO show choose tower
-                    //throw new NotImplementedException();
->>>>>>> master
-                }
+    /***
+     * add new tower to the board
+     * @param index index of tower
+     * @param x
+     * @param y
+     */
+    public void AddTower(int index,int x,int y){
+        // check if its possible to add tower
+        if ((_towerToAdd[index]>0)){
+            _towerToAdd[index]--;
+            Tower addedTower = null;
+            //find what type of tower to add
+            switch (index){
+                case 0:
+                     addedTower = new TowerArrow(x,y,_gameBoard);
+                     break;
+                case 1:
+                    addedTower = new TowerLava(x,y,_gameBoard);
+                    break;
+                case 2:
+                    addedTower = new TowerMagic(x,y,_gameBoard);
+                    break;
+                case 3:
+                    addedTower = new TowerPoison(x,y,_gameBoard);
+                    break;
+                case 4:
+                    addedTower = new TowerGoku(x,y,_gameBoard);
+                    break;
+                case 5:
+                    addedTower = new TowerDrug(x,y,_gameBoard);
+                    break;
+                case 6:
+                    addedTower = new TowerDragon(x,y,_gameBoard);
+                    break;
             }
+            _gameBoard.addTower(addedTower);
         }
+        PaintNewGamePanel();
     }
 
     /***
@@ -282,7 +368,6 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      * @param y
      * @return the tower if exsits or null if doesn't
      */
-    //@Nullable
     private Tower CheckForTowerInSquare (int x, int y){
         Vector<Tower> towers = _gameBoard.getTowers();
         for (Tower t : towers){
@@ -300,7 +385,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
      * @return true - if a grass square
      */
     private boolean IsGrass (int x,int y) {
-        if (_pathCoords[x][y].getX()!=0 | _pathCoords[x][y].getY()!=0){
+        if (_pathCoords[y][x].getX()!=0 | _pathCoords[y][x].getY()!=0){
             return false;
         }
         return true;
@@ -334,8 +419,13 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         _gameBoard.tickHappened(); // update board logic
         this.PaintNewGamePanel(); // paint new board
-        setLifeLeft(_gameBoard.getPlayerHealth()); //TODO neccesery?
+        setLifeLeft(_gameBoard.getPlayerHealth());
+        CheckForGameEnding();
+        if (_timer.getDelay()==_fastSpeed){
+            _fastSpeedCounter++;
+        }
+        else {
+            _slowSpeedCounter++;
+        }
     }
-
-    //TODO - add new TOWER
 }

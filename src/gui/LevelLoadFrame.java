@@ -1,12 +1,14 @@
-package View;
+package gui;
 
 import javax.swing.*;
+
+import logic.*;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Vector;
-import model.*;
 
 /**
  * Created by ariel on 11-Jun-17.

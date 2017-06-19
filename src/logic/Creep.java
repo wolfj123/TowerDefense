@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public abstract class Creep extends Tickable implements Visited, Comparable<Creep>{
 	private int _x;
