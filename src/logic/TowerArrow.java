@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public class TowerArrow extends Tower {
 

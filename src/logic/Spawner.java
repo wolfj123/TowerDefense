@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 import java.util.Collections;
 import java.util.Vector;

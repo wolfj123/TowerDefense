@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public abstract class Tickable {
 	private int _ticks;

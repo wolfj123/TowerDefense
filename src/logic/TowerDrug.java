@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public class TowerDrug extends TowerAOE{
 

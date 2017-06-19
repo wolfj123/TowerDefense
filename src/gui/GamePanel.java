@@ -1,8 +1,9 @@
-package View;
-
-import model.*;
+package gui;
 
 import javax.swing.*;
+
+import logic.*;
+
 import java.awt.*;
 import java.util.Vector;
 

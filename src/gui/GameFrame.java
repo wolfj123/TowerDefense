@@ -1,9 +1,9 @@
-package View;
-
-//import com.sun.istack.internal.Nullable;
-import model.*;
+package gui;
 
 import javax.swing.*;
+
+import logic.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

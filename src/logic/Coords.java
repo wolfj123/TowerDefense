@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public class Coords {
 	private int _x;

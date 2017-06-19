@@ -1,4 +1,4 @@
-package View;
+package gui;
 
 /**
  * Created by ariel on 12-Jun-17.
