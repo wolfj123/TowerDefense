@@ -41,14 +41,13 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
         JScrollPane scrolList = new JScrollPane(_levelNamesJlist);
         _levelNamesJlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); /// enable selecting only one level
 
-        //JSplitPane screen = new JSplitPane(JSplitPane.VERTICAL_SPLIT,UpperPanel(),scrolList);
 
         this.setLayout(new BorderLayout());
         this.add(UpperPanel(),BorderLayout.NORTH);
         this.add(_levelNamesJlist,BorderLayout.SOUTH);
 
 
-       // this.add(screen);
+        this.setResizable(false);
         this.pack();
         this.setVisible(true);
     }
