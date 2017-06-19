@@ -12,7 +12,6 @@ import java.awt.event.MouseListener;
 
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.IOException;
 import java.util.Vector;
 
 
@@ -23,6 +22,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     private JLabel _lifeLabel;
     private JLabel _waveLabel;
+    private JLabel _timeLabel;
     private JToolBar _toolBar;
     private  boolean _gameSpeed; // true - normal speed, false - double speed
 
@@ -45,8 +45,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
     private int _normalSpeed;
     private int _fastSpeed;
 
-    private int _slowSpeedCounter;
-    private int _fastSpeedCounter;
+    private int _timeCounter;
 
     public GameFrame (int levelNum,LevelLoader levelLoader) {
         super ("Tower Defense");
@@ -60,8 +59,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _canContinuePlaying=true;
         _gameBoard = new Board(_pathCoords);
 
-        _slowSpeedCounter=0;
-        _fastSpeedCounter=0;
+        _timeCounter =0;
 
         _towerToAdd = new int [7];
         for (int i = 0; i < _towerToAdd.length; i++) {
@@ -103,6 +101,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         //create _labels
         _lifeLabel = new JLabel("life left: 20");
         _waveLabel =  new JLabel("wave: 1");
+        _timeLabel = new JLabel("time passed: 0");
         //create buttons
         _speedButton = new JButton("Normal Speed");
         _gameSpeed = true;
@@ -116,6 +115,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         _toolBar.add(_waveLabel);
         _toolBar.add(_speedButton);
         _toolBar.add(_startWave);
+        _toolBar.add(_timeLabel);
     }
 
     /***
@@ -215,15 +215,14 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
 
     private double CalculateTime(){
         double ans=0;
-        double slow = _slowSpeedCounter*_normalSpeed;
-        double fast = _fastSpeedCounter*_fastSpeed;
-        ans = (fast+slow)/1000;
+        ans= (_timeCounter *_normalSpeed)/1000;
         return ans;
     }
 
     private void CheckForGameEnding () {
         //in case of a win
         if (_gameBoard.playerWon()){
+            _startWave.setBackground(UIManager.getColor("Panel.background"));
             _timer.stop();
             _gameRunnig=false;
             //prepare check if game ended
@@ -234,8 +233,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                 " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
                 _gameBoard.getPlayerHealth() + " life left" +"\n"
                 + "it took you: "+CalculateTime()+" seconds");
-                _slowSpeedCounter=0;
-                _fastSpeedCounter=0;
+                _timeCounter =0;
             }
             // player won the game
             else {
@@ -244,25 +242,24 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                         " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
                         _gameBoard.getPlayerHealth() + " life left"+"\n"
                         + "it took you: "+CalculateTime()+" seconds"+ "\n" + "Congratulations you have won!!!!!!!!!!!!!");
-                _slowSpeedCounter=0;
-                _fastSpeedCounter=0;
+                _timeCounter =0;
+                this.dispose();
             }
         }
 
         // in case of a lose
         if (_gameBoard.playerLost()){
+            _startWave.setBackground(UIManager.getColor("Panel.background"));
             _canContinuePlaying=false;
             _timer.stop();
             _gameRunnig=false;
-            _slowSpeedCounter=0;
-            _fastSpeedCounter=0;
+            _timeCounter =0;
             JOptionPane.showMessageDialog(null,"you killed: "+_gameBoard.getNumOfDeadCreeps()+
                     " creeps, " +"\n"+_gameBoard.getNumOfVictoriousCreeps() + " creeps got away, " +"\n"+ "you have: "+
                     _gameBoard.getPlayerHealth() + " life left"+"\n"
                     + "it took you: "+CalculateTime()+" seconds"+"\n"+ "You have lost - try again");
-            _slowSpeedCounter=0;
-            _fastSpeedCounter=0;
-
+            _timeCounter =0;
+            this.dispose();
         }
 
     }
@@ -277,6 +274,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
                     _gameRunnig = true;
                     _gameBoard.setWave(_gameBoard.getWave());
                     _timer.start();
+                    _startWave.setBackground(Color.BLACK);
                 }
             }
             //change speed button
@@ -421,11 +419,7 @@ public class GameFrame extends JFrame implements MouseListener, ActionListener {
         this.PaintNewGamePanel(); // paint new board
         setLifeLeft(_gameBoard.getPlayerHealth());
         CheckForGameEnding();
-        if (_timer.getDelay()==_fastSpeed){
-            _fastSpeedCounter++;
-        }
-        else {
-            _slowSpeedCounter++;
-        }
+        _timeCounter++;
+        _timeLabel.setText("time passed: "+CalculateTime());
     }
 }

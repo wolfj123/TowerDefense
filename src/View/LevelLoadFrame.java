@@ -23,7 +23,7 @@ public class LevelLoadFrame extends JFrame implements MouseListener {
 
         // get all info needed for level names
         Vector <String> levelNames = new Vector <String>();
-         _levelLoader = new LevelLoader();
+        _levelLoader = new LevelLoader();
         _levelLoader.Load();
         int numberOfLevels = _levelLoader.numOfLeveles();
 

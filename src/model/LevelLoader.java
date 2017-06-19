@@ -50,6 +50,7 @@ public class LevelLoader {
                 // if level exists insert to levels
                 if (currLevel != null) {
                     _levles.add(currLevel);
+                    currLevel=null;
                 }
                 continue;
             }
