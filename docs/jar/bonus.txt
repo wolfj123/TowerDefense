@@ -1,9 +1,24 @@
-בונוסים שמומשו:
-- מגדל האטה
--מגדל גוקו
--דינו המעופף
+List of bonus features in our project:
+- Drug tower (slowness)
+- Goku tower (increasing damage over time)
+- Dragon tower
 
 
+Drug tower (slowness)
+Extends the abstract class Tower (Visitor).
+The visit methods of the Drug Tower call the inflictSlow method of the Creep (Visited).
+The inflictSlow method behaves like the inflictPoison method regarding the duration calculation. 
+A creep that has been slowed down, will have to wait more "ticks" until he performs a movement action.
 
-מגדל האטה:
+________
 
+Goku tower (slowness)
+Extends the abstract class Tower (Visitor).
+A private int field _h doubles each time the _numOfHits counter reaches 10.
+The visit methods of the Goku Tower inflict damage by _h*k (k being the base damage for each different creep).
+
+________
+
+Dragon tower (slowness)
+Extends the abstract class Tower (Visitor).
+The tickAction method in this class overrides the super's and calculates a random direction to move to (change x,y).
