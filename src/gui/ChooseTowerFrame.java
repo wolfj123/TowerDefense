@@ -11,11 +11,11 @@ import java.util.Arrays;
  */
 public class ChooseTowerFrame extends JFrame implements MouseListener {
 
-
-    GameFrame _gameFrame;
-    int _x;
-    int _y;
-    JLabel[][] _labels;
+    private GameFrame _gameFrame;
+    private int _x;
+    private int _y;
+    private JLabel[][] _labels;
+    
     public ChooseTowerFrame(int [] towersLeft , ImageIcon [] icons,GameFrame gameFrame,int x,int y) {
         super("Tower Defense - Select Tower");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
