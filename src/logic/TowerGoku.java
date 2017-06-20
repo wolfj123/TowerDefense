@@ -42,7 +42,7 @@ public class TowerGoku extends Tower {
 
 	private void calculateH(){
 		_numOfHits+=1;
-		if(_numOfHits==0){
+		if(_numOfHits>=10){
 			_numOfHits=0;
 			_h=_h*2;
 		}
