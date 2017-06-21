@@ -20,7 +20,6 @@ public class TowerArrow extends Tower {
 
 	}
 
-	//TODO: maybe add null effect?
 	@Override
 	public void visit(CreepKnight creep) {
 		_isAttacking=true;

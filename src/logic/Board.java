@@ -90,11 +90,7 @@ public class Board extends Tickable{
 	public Vector<Creep> getCreepsInRange(int x, int y, int range){
 		if(x<0 | x>= _xSize | y<0 | y>=_ySize)
 			throw new IndexOutOfBoundsException("x/y coordinates outside of board.");
-		
-		//TODO: maybe delete?
-		//if(x-range<0 | x+range>= _xSize | y-range<0 | y+range>=_ySize)
-			//throw new IndexOutOfBoundsException("range coordinates outside of board.");
-		
+			
 		Vector<Creep> output = new Vector<Creep>();
 		
 		for(Creep c : _creeps){

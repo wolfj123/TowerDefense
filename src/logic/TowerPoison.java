@@ -12,7 +12,6 @@ public class TowerPoison extends Tower {
 		creep.inflictDamage(20);
 	}
 
-	//TODO: maybe add Null effect?
 	@Override
 	public void visit(CreepAlien creep) {
 		_isAttacking=true;
